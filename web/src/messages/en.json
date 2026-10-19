@@ -1,0 +1,74 @@
+{
+  "app": {
+    "name": "Distrik",
+    "tagline": "AI Sales OS for Indian manufacturers"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "campaigns": "Campaigns",
+    "approvals": "Approvals",
+    "pipeline": "Pipeline",
+    "quotations": "Quotations & POs",
+    "orders": "Orders",
+    "analytics": "Analytics",
+    "products": "Products",
+    "rules": "Commercial rules",
+    "settings": "Settings",
+    "today": "Today",
+    "leads": "Leads",
+    "reorders": "Reorders",
+    "notifications": "Notifications",
+    "sources": "Data sources",
+    "templates": "Templates",
+    "tenants": "Tenants",
+    "jobs": "Jobs",
+    "leadReview": "Lead Review",
+    "health": "Platform health"
+  },
+  "stage": {
+    "new": "New",
+    "contacted": "Contacted",
+    "engaged": "Engaged",
+    "qualified": "Qualified",
+    "negotiating": "Negotiating",
+    "quoted": "Quoted",
+    "first_order": "First order",
+    "repeat_order": "Repeat order",
+    "lost": "Lost"
+  },
+  "consent": {
+    "none": "No consent",
+    "engaged": "Engaged",
+    "opted_in": "Opted in",
+    "opted_out": "Opted out"
+  },
+  "tier": {
+    "autonomous": "Autonomous",
+    "approval": "Approval required",
+    "human_only": "Human only"
+  },
+  "common": {
+    "retry": "Try again",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "loading": "Loading…",
+    "empty": "Nothing here yet",
+    "error": "Something went wrong",
+    "signOut": "Sign out",
+    "offline": "You are offline"
+  },
+  "review": {
+    "pending": "Pending Review",
+    "needs_review": "Needs Review",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "merged": "Merged"
+  },
+  "flag": {
+    "possible_duplicate": "Possible duplicate",
+    "low_classification_confidence": "Low classification confidence",
+    "flagged_by_rep": "Flagged by a rep",
+    "missing_phone": "Missing phone number"
+  }
+}

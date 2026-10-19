@@ -1,0 +1,12 @@
+node_modules/
+.env
+.env.local
+supabase/.env
+supabase/.temp/
+supabase/.branches/
+*.log
+.DS_Store
+
+# test artifacts
+web/test-results/
+web/playwright-report/

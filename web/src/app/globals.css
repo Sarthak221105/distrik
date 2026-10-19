@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+/* Design tokens: one theme file with light and dark modes (PRD 13). */
+:root {
+  --background: #f7f7f4;
+  --surface: #ffffff;
+  --surface-muted: #f1f1ec;
+  --foreground: #1c1d1a;
+  --muted-foreground: #63655e;
+  --border: #e3e3dc;
+  --ring: #0f766e;
+
+  --primary: #0f766e;
+  --primary-foreground: #ffffff;
+  --primary-soft: #e3f3f1;
+
+  --accent: #b45309;
+  --accent-soft: #fdf2e3;
+
+  --success: #15803d;
+  --success-soft: #e6f4ea;
+  --warning: #a16207;
+  --warning-soft: #fdf6dd;
+  --danger: #b91c1c;
+  --danger-soft: #fdeaea;
+  --info: #1d4ed8;
+  --info-soft: #e8eefc;
+
+  --ai: #6d28d9;
+  --ai-soft: #f1ebfd;
+
+  --radius: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #121311;
+    --surface: #1a1b19;
+    --surface-muted: #222420;
+    --foreground: #ecece7;
+    --muted-foreground: #a2a49c;
+    --border: #2f312c;
+    --ring: #2dd4bf;
+
+    --primary: #2bb3a3;
+    --primary-foreground: #08201d;
+    --primary-soft: #133631;
+
+    --accent: #f59e0b;
+    --accent-soft: #3a2a10;
+
+    --success: #4ade80;
+    --success-soft: #143021;
+    --warning: #facc15;
+    --warning-soft: #352d0d;
+    --danger: #f87171;
+    --danger-soft: #3b1717;
+    --info: #93b4fd;
+    --info-soft: #18233d;
+
+    --ai: #b794f6;
+    --ai-soft: #2a1f42;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-ai: var(--ai);
+  --color-ai-soft: var(--ai-soft);
+  --radius-lg: var(--radius);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Focus is always visible (WCAG 2.1 AA). */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-muted) 0px, var(--border) 80px, var(--surface-muted) 160px);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
+}

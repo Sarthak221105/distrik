@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Distrik">
+  <rect width="512" height="512" fill="#0f766e"/>
+  <g transform="translate(256 256) scale(0.7) translate(-256 -256)">
+    <path d="M160 128h96c88 0 144 52 144 128s-56 128-144 128h-96z" fill="none" stroke="#ffffff" stroke-width="48" stroke-linejoin="round"/>
+    <circle cx="352" cy="384" r="24" fill="#f59e0b"/>
+  </g>
+</svg>
