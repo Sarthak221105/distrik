@@ -5,11 +5,17 @@ import { decodeClaims, homeForRole, type AppRole } from "@/lib/claims";
 // Refreshes the Supabase session cookie and routes each user to their
 // surface. This is a convenience: RLS and RPC role checks are the real
 // enforcement.
-const PUBLIC_PATHS = ["/login", "/verify", "/auth", "/no-access", "/offline", "/manifest.webmanifest", "/sw.js"];
+const PUBLIC_PATHS = [
+  "/login", "/verify", "/auth", "/no-access", "/offline", "/manifest.webmanifest", "/sw.js",
+  // public marketing site and self-serve signup
+  "/signup", "/policies",
+];
 
 const SURFACES: { prefix: string; roles: AppRole[] }[] = [
   { prefix: "/system", roles: ["system_admin"] },
   { prefix: "/rep", roles: ["rep", "owner", "sales_head"] },
+  // first sign in after an invite: every role sets a password here
+  { prefix: "/welcome", roles: ["owner", "sales_head", "rep", "system_admin"] },
   {
     prefix: "/",
     roles: ["owner", "sales_head"],
@@ -38,7 +44,8 @@ export async function proxy(request: NextRequest) {
 
   const { data: userData } = await supabase.auth.getUser();
   const path = request.nextUrl.pathname;
-  const isPublic = PUBLIC_PATHS.some((p) => path === p || path.startsWith(p + "/"));
+  // "/" is the public landing page for signed out visitors.
+  const isPublic = path === "/" || PUBLIC_PATHS.some((p) => path === p || path.startsWith(p + "/"));
 
   if (!userData.user) {
     if (isPublic) return response;

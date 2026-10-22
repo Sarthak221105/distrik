@@ -26,6 +26,7 @@ export const qk = {
   reorders: () => ["reorders"] as const,
   analytics: (name: string) => ["analytics", name] as const,
   team: () => ["team"] as const,
+  billing: () => ["billing"] as const,
   leads: (filters: Record<string, unknown> = {}) => ["leads", filters] as const,
   lead: (id: string) => ["lead", id] as const,
   leadReviews: (id: string) => ["lead-reviews", id] as const,

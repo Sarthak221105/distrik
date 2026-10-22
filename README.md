@@ -40,7 +40,28 @@ discovery -> automatic cleaning, dedupe, classification, research, fit score
 - **Lead Review** (`/leads`): Pending Review, Needs Review (possible duplicate, low confidence, missing phone, flagged by a rep), Approved, Rejected. Approve, reject with a reason, edit, merge duplicates, keep separate, assign to a rep, bulk actions, review history.
 - **Outreach gate**: a discovered prospect can only be messaged after approval (`enqueue_outbound_message` raises `prospect_not_approved`), and consent rules still apply independently. Outreach can launch for approved prospects while others are still under review.
 - **Permissions**: owners can do everything; owners delegate `review_leads`, `resolve_duplicates`, `assign_leads`, `launch_campaigns` and `override_reviews` to sales heads. Reps see only assigned leads and can correct them or send them back to review.
-- **System admin** (`/system`): platform health, queues and dead letters, tenant setup, data-source compliance and template status sync. It works from aggregates and cannot read any manufacturer's prospects, contacts or conversations.
+- **System admin** (`/system`): platform health, queues and dead letters, activating self-serve applications, connecting tenants' WhatsApp numbers, data-source compliance and template status sync. It works from aggregates and cannot read any manufacturer's prospects, contacts or conversations.
+
+### From landing page to workspace
+
+Manufacturers sign themselves up; the system admin no longer types tenant details in.
+
+```
+/ (landing: product, how it works, policies, pricing, FAQ, waitlist)
+  -> Join the waitlist (email only)                         -> waitlist counter +1
+  -> Choose Basic / Growth / Scale, monthly or yearly
+     -> /signup  company, owner, accept Terms                 (public-signup fn)
+        -> application (pending_payment) + placeholder payment + waitlist counter +1
+        -> /signup/status/<token>  "payment coming soon, you are #N on the waitlist"
+System admin -> /system/applications -> Activate (records the payment reference)
+  -> activate-application fn: manufacturer + subscription + owner invite email
+  -> /auth/confirm -> /welcome (set password) -> /dashboard
+```
+
+- Plans live in the `plans` table: Basic ₹5,000, Growth ₹9,000 and Scale ₹20,000 a month plus GST, or yearly at 20% off. Limits (seats, campaigns, prospects) are shown in **Settings → Plan & billing** and are not enforced.
+- Online payment is a placeholder (`supabase/functions/_shared/payments/`). A gateway adapter plus webhook will call the same activation path the Activate button uses.
+- The policy pages (`/policies/terms`, `/policies/privacy`, `/policies/refunds`) are drafts pending legal review.
+- Locally, the invite email lands in Mailpit at http://127.0.0.1:55424. The seeded application waiting for payment has its status page at `/signup/status/demo-application-token`.
 
 Edge Functions are stateless and only reach the outside world. pg_cron wakes them through pg_net when their pgmq queue has work.
 
@@ -98,7 +119,7 @@ deno test --allow-env --allow-read supabase/functions/tests
 ```
 
 ```bash
-cd web && npx tsc --noEmit && npx eslint src
+cd web && npx tsc --noEmit && npx eslint src e2e
 ```
 
 End-to-end tests need the dev server running and a fresh seed (`supabase db reset`):
@@ -120,7 +141,9 @@ cd web && npx playwright test
 | po-parse | pg_cron, queue `po_parse` | Read a PO (Claude or a regex fallback) and run the SQL matcher |
 | notify | pg_cron, queue `notifications` | Web push (VAPID) and email (Resend) |
 | catalogue-extract, parse-objective | Signed in manager | Propose products from a catalogue, parse a Start Sales objective |
-| admin-users | Owner / system admin | Owners invite their team; the system admin creates tenants |
+| admin-users | Owner | Owners invite their team |
+| public-signup | Public (rate limited, honeypot) | Landing stats, waitlist, self-serve applications and their status page |
+| activate-application | System admin | Mark an application paid, create the tenant and subscription, invite the owner |
 | erase-contact | Company owner | DPDP erasure across messages, contacts and media |
 | simulate-inbound | Owner / sales head, sandbox only | WhatsApp test sandbox for the caller's own business number |
 

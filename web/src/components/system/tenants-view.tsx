@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Building2, Plus } from "lucide-react";
+import Link from "next/link";
+import { Building2, ClipboardList } from "lucide-react";
 import { EmptyState, ErrorState, LoadingSkeleton, PageHeader } from "@/components/domain/states";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Field, Input, NativeSelect, Textarea } from "@/components/ui/input";
+import { Field, Input } from "@/components/ui/input";
 import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
-import { JsonView, invokeFn } from "@/components/system/admin-utils";
 import { getSupabaseBrowser } from "@/lib/supabase/client";
 import { unwrap } from "@/lib/errors";
 import { qk } from "@/lib/query-keys";
@@ -32,11 +32,14 @@ type TenantRow = {
   users: number;
   products: number;
   campaigns: number;
+  plan_code: string | null;
+  billing_cycle: string | null;
+  subscription_status: string | null;
 };
 
 export function TenantsView() {
   const supabase = getSupabaseBrowser();
-  const [createOpen, setCreateOpen] = useState(false);
+  const [connecting, setConnecting] = useState<TenantRow | null>(null);
 
   const list = useQuery({
     queryKey: KEY,
@@ -49,10 +52,12 @@ export function TenantsView() {
     <div className="grid gap-6">
       <PageHeader
         title="Tenants"
-        description="Manufacturers on the platform. Creating a tenant also invites its owner."
+        description="Manufacturers on the platform. New tenants sign up from the pricing page and are activated from Applications."
         actions={
-          <Button onClick={() => setCreateOpen(true)}>
-            <Plus aria-hidden /> Create tenant
+          <Button asChild variant="outline">
+            <Link href="/system/applications">
+              <ClipboardList aria-hidden /> Applications
+            </Link>
           </Button>
         }
       />
@@ -65,8 +70,12 @@ export function TenantsView() {
         <EmptyState
           icon={<Building2 aria-hidden />}
           title="No tenants yet"
-          description="Create the first manufacturer and invite its owner."
-          action={<Button onClick={() => setCreateOpen(true)}>Create tenant</Button>}
+          description="Activate an application to create the first manufacturer."
+          action={
+            <Button asChild>
+              <Link href="/system/applications">Review applications</Link>
+            </Button>
+          }
         />
       ) : (
         <Card>
@@ -75,6 +84,7 @@ export function TenantsView() {
               <TR>
                 <TH>Manufacturer</TH>
                 <TH>City · state</TH>
+                <TH>Plan</TH>
                 <TH>GSTIN</TH>
                 <TH className="text-right">Users</TH>
                 <TH className="text-right">Products</TH>
@@ -91,6 +101,18 @@ export function TenantsView() {
                     {m.legal_name && m.legal_name !== m.name && <div className="text-xs text-muted-foreground">{m.legal_name}</div>}
                   </TD>
                   <TD className="text-xs">{[m.city, m.state].filter(Boolean).join(", ")}</TD>
+                  <TD className="text-xs">
+                    {m.plan_code ? (
+                      <>
+                        <div className="font-medium capitalize">{m.plan_code}</div>
+                        <div className="capitalize text-muted-foreground">
+                          {m.billing_cycle} · {m.subscription_status}
+                        </div>
+                      </>
+                    ) : (
+                      <span className="text-muted-foreground">No plan</span>
+                    )}
+                  </TD>
                   <TD className="font-mono text-xs">{m.gstin ?? "–"}</TD>
                   <TD className="text-right tabular">{m.users}</TD>
                   <TD className="text-right tabular">{m.products}</TD>
@@ -102,7 +124,12 @@ export function TenantsView() {
                         <div className="text-muted-foreground">{m.whatsapp_display_number ?? ""}</div>
                       </>
                     ) : (
-                      <Badge tone="warning">Not connected</Badge>
+                      <div className="flex flex-col items-start gap-1">
+                        <Badge tone="warning">Not connected</Badge>
+                        <Button variant="link" size="sm" onClick={() => setConnecting(m)}>
+                          Connect
+                        </Button>
+                      </div>
                     )}
                   </TD>
                   <TD className="text-xs">{formatDate(m.created_at)}</TD>
@@ -113,158 +140,67 @@ export function TenantsView() {
         </Card>
       )}
 
-      <CreateTenantDialog open={createOpen} onOpenChange={setCreateOpen} />
+      <ConnectWhatsAppDialog tenant={connecting} onClose={() => setConnecting(null)} />
     </div>
   );
 }
 
-const GSTIN_RE = /^[0-9]{2}[A-Z0-9]{13}$/;
-const EMPTY = {
-  name: "",
-  legal_name: "",
-  gstin: "",
-  state: "",
-  city: "",
-  address: "",
-  phone: "",
-  email: "",
-  whatsapp_phone_number_id: "",
-  whatsapp_display_number: "",
-  quote_prefix: "Q",
-  owner_email: "",
-  owner_name: "",
-  owner_phone: "",
-};
-
-function CreateTenantDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
+function ConnectWhatsAppDialog({ tenant, onClose }: { tenant: TenantRow | null; onClose: () => void }) {
   const supabase = getSupabaseBrowser();
-  const [f, setF] = useState(EMPTY);
+  const [phoneNumberId, setPhoneNumberId] = useState("");
+  const [display, setDisplay] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [result, setResult] = useState<unknown>(null);
-
-  const states = useQuery({
-    enabled: open,
-    queryKey: qk.system("india-states"),
-    queryFn: async () => unwrap(await supabase.from("india_states").select("code, name").order("name")) ?? [],
-    staleTime: Infinity,
-  });
-
-  const create = useRpc(
-    async () => {
-      const blank = (s: string) => s.trim() || undefined;
-      return invokeFn("admin-users", {
-        action: "create_tenant",
-        manufacturer: {
-          name: f.name.trim(),
-          legal_name: blank(f.legal_name),
-          gstin: blank(f.gstin.toUpperCase()),
-          state: f.state,
-          city: blank(f.city),
-          address: blank(f.address),
-          phone: blank(f.phone),
-          email: blank(f.email),
-          whatsapp_phone_number_id: blank(f.whatsapp_phone_number_id),
-          whatsapp_display_number: blank(f.whatsapp_display_number),
-          quote_prefix: blank(f.quote_prefix) ?? "Q",
-        },
-        owner: { email: f.owner_email.trim(), full_name: f.owner_name.trim(), phone: blank(f.owner_phone) },
-      });
-    },
+  const connect = useRpc(
+    async (id: string) =>
+      unwrap(
+        await supabase.rpc("sysadmin_connect_whatsapp", {
+          p_manufacturer: id,
+          p_phone_number_id: phoneNumberId.trim(),
+          p_display_number: display.trim() || undefined,
+        }),
+      ),
     {
       invalidate: [KEY, qk.system("manufacturers")],
-      success: "Tenant created. The owner gets an invite by email.",
-      onSuccess: (data) => {
-        setResult(data);
-        setF(EMPTY);
+      success: "WhatsApp connected",
+      onSuccess: () => {
+        setPhoneNumberId("");
+        setDisplay("");
+        onClose();
       },
-      onError: (e) => {
-        if (e.field) setErrors({ [e.field.replace(/^(manufacturer|owner)\./, "")]: e.message });
-      },
+      onError: (e) => e.field && setErrors({ [e.field]: e.message }),
     },
   );
-
-  function validate(): boolean {
-    const e: Record<string, string> = {};
-    if (!f.name.trim()) e.name = "Required";
-    if (!f.state) e.state = "Required";
-    if (f.gstin.trim() && !GSTIN_RE.test(f.gstin.trim().toUpperCase())) e.gstin = "GSTIN is 15 characters: 2 digits then 13 letters or digits";
-    if (!/^\S+@\S+\.\S+$/.test(f.owner_email.trim())) e.owner_email = "A valid email is required";
-    if (!f.owner_name.trim()) e.owner_name = "Required";
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  }
-
-  const input = (key: keyof typeof EMPTY, label: string, props: React.InputHTMLAttributes<HTMLInputElement> = {}) => (
-    <Field label={label} htmlFor={`ct-${key}`} error={errors[key]}>
-      <Input id={`ct-${key}`} value={f[key]} onChange={(e) => setF({ ...f, [key]: e.target.value })} aria-invalid={!!errors[key]} {...props} />
-    </Field>
-  );
-
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(o) => {
-        onOpenChange(o);
-        if (!o) setResult(null);
-      }}
-    >
-      <DialogContent title="Create tenant" description="Sets up the manufacturer with conservative defaults and invites its owner." className="max-w-2xl">
-        {result ? (
-          <div className="grid gap-3">
-            <p className="text-sm">The tenant was created. Details returned by the admin function:</p>
-            <JsonView value={result} label="Create tenant result" />
-            <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setResult(null)}>
-                Create another
-              </Button>
-              <Button onClick={() => onOpenChange(false)}>Done</Button>
-            </div>
-          </div>
-        ) : (
+    <Dialog open={!!tenant} onOpenChange={(o) => !o && onClose()}>
+      <DialogContent title="Connect WhatsApp" description={tenant ? `Link ${tenant.name} to its WhatsApp Business number at the BSP.` : undefined}>
+        {tenant && (
           <form
             className="grid gap-4"
             onSubmit={(e) => {
               e.preventDefault();
-              if (validate()) create.mutate(undefined);
+              if (!phoneNumberId.trim()) return setErrors({ whatsapp_phone_number_id: "Required" });
+              setErrors({});
+              connect.mutate(tenant.id);
             }}
           >
-            <fieldset className="grid gap-3 sm:grid-cols-2">
-              <legend className="mb-2 text-sm font-semibold">Manufacturer</legend>
-              {input("name", "Display name")}
-              {input("legal_name", "Legal name")}
-              {input("gstin", "GSTIN", { placeholder: "27ABCDE1234F1Z5", className: "uppercase" })}
-              <Field label="State" htmlFor="ct-state" error={errors.state}>
-                <NativeSelect id="ct-state" value={f.state} onChange={(e) => setF({ ...f, state: e.target.value })} aria-invalid={!!errors.state}>
-                  <option value="">Choose a state…</option>
-                  {(states.data ?? []).map((s) => (
-                    <option key={s.code} value={s.name}>
-                      {s.name}
-                    </option>
-                  ))}
-                </NativeSelect>
-              </Field>
-              {input("city", "City")}
-              {input("phone", "Phone", { type: "tel" })}
-              {input("email", "Company email", { type: "email" })}
-              {input("quote_prefix", "Quotation prefix", { maxLength: 8 })}
-              <Field label="Address" htmlFor="ct-address" className="sm:col-span-2">
-                <Textarea id="ct-address" value={f.address} onChange={(e) => setF({ ...f, address: e.target.value })} rows={2} />
-              </Field>
-              {input("whatsapp_phone_number_id", "WhatsApp phone number id (BSP)")}
-              {input("whatsapp_display_number", "WhatsApp display number", { type: "tel" })}
-            </fieldset>
-            <fieldset className="grid gap-3 sm:grid-cols-2">
-              <legend className="mb-2 text-sm font-semibold">Owner</legend>
-              {input("owner_name", "Full name")}
-              {input("owner_email", "Email", { type: "email" })}
-              {input("owner_phone", "Phone", { type: "tel" })}
-            </fieldset>
+            <Field label="BSP phone number id" htmlFor="wa-id" error={errors.whatsapp_phone_number_id}>
+              <Input id="wa-id" value={phoneNumberId} onChange={(e) => setPhoneNumberId(e.target.value)} aria-invalid={!!errors.whatsapp_phone_number_id} />
+            </Field>
+            <Field label="Display number" htmlFor="wa-display" error={errors.whatsapp_display_number}>
+              <Input
+                id="wa-display"
+                type="tel"
+                value={display}
+                placeholder={tenant.whatsapp_display_number ?? ""}
+                onChange={(e) => setDisplay(e.target.value)}
+              />
+            </Field>
             <div className="flex justify-end gap-2">
-              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+              <Button type="button" variant="outline" onClick={onClose}>
                 Cancel
               </Button>
-              <Button type="submit" loading={create.isPending}>
-                Create tenant
+              <Button type="submit" loading={connect.isPending}>
+                Connect
               </Button>
             </div>
           </form>

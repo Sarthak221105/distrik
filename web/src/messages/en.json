@@ -21,6 +21,7 @@
     "sources": "Data sources",
     "templates": "Templates",
     "tenants": "Tenants",
+    "applications": "Applications",
     "jobs": "Jobs",
     "leadReview": "Lead Review",
     "health": "Platform health"

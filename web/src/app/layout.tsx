@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Geist, Inter } from "next/font/google";
 import { Providers } from "@/components/providers";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
 
 export const metadata: Metadata = {
   title: { default: "Distrik · AI Sales OS", template: "%s · Distrik" },
@@ -15,8 +16,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#0f766e" },
-    { media: "(prefers-color-scheme: dark)", color: "#121311" },
+    { media: "(prefers-color-scheme: light)", color: "#2851eb" },
+    { media: "(prefers-color-scheme: dark)", color: "#13142a" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -24,7 +25,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} ${geist.variable}`}>
       <body className="min-h-dvh">
         <Providers>{children}</Providers>
       </body>

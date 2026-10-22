@@ -12,12 +12,14 @@ import { TemplateSettings } from "./template-settings";
 import { FitWeightSettings } from "./fit-weight-settings";
 import { DataExport } from "./data-export";
 import { PrivacySettings } from "./privacy-settings";
+import { BillingSettings } from "./billing-settings";
 
 const ALL_TABS = [
   { value: "team", label: "Team & permissions" },
   { value: "company", label: "Company profile" },
   { value: "templates", label: "Templates & channels" },
   { value: "weights", label: "Fit weights" },
+  { value: "billing", label: "Plan & billing" },
   { value: "export", label: "Data export" },
   { value: "privacy", label: "Privacy", ownerOnly: true },
   { value: "whatsapp-test", label: "WhatsApp test" },
@@ -43,6 +45,7 @@ export function SettingsClient({ initialTab }: { initialTab: string }) {
         <TabsContent value="company"><CompanySettings /></TabsContent>
         <TabsContent value="templates"><TemplateSettings /></TabsContent>
         <TabsContent value="weights"><FitWeightSettings /></TabsContent>
+        <TabsContent value="billing"><BillingSettings /></TabsContent>
         <TabsContent value="export"><DataExport /></TabsContent>
         {viewer.role === "owner" && <TabsContent value="privacy"><PrivacySettings /></TabsContent>}
         <TabsContent value="whatsapp-test"><WhatsAppTestPanel /></TabsContent>

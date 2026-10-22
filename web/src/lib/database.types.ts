@@ -7,6 +7,31 @@ export type Json =
   | Json[]
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       ai_actions: {
@@ -1885,6 +1910,48 @@ export type Database = {
           },
         ]
       }
+      plans: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          features: string[]
+          is_featured: boolean
+          limits: Json
+          monthly_price_paise: number
+          name: string
+          sort_order: number
+          tagline: string | null
+          yearly_price_paise: number
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          features?: string[]
+          is_featured?: boolean
+          limits?: Json
+          monthly_price_paise: number
+          name: string
+          sort_order?: number
+          tagline?: string | null
+          yearly_price_paise: number
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          features?: string[]
+          is_featured?: boolean
+          limits?: Json
+          monthly_price_paise?: number
+          name?: string
+          sort_order?: number
+          tagline?: string | null
+          yearly_price_paise?: number
+        }
+        Relationships: []
+      }
       product_events: {
         Row: {
           created_at: string
@@ -2902,6 +2969,275 @@ export type Database = {
         }
         Relationships: []
       }
+      subscription_payments: {
+        Row: {
+          amount_paise: number
+          application_id: string | null
+          created_at: string
+          currency: string
+          id: string
+          manufacturer_id: string | null
+          paid_at: string | null
+          provider: string
+          provider_ref: string | null
+          raw: Json
+          status: string
+        }
+        Insert: {
+          amount_paise: number
+          application_id?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          manufacturer_id?: string | null
+          paid_at?: string | null
+          provider?: string
+          provider_ref?: string | null
+          raw?: Json
+          status?: string
+        }
+        Update: {
+          amount_paise?: number
+          application_id?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          manufacturer_id?: string | null
+          paid_at?: string | null
+          provider?: string
+          provider_ref?: string | null
+          raw?: Json
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_payments_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "tenant_applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscription_payments_manufacturer_id_fkey"
+            columns: ["manufacturer_id"]
+            isOneToOne: false
+            referencedRelation: "manufacturers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscription_payments_manufacturer_id_fkey"
+            columns: ["manufacturer_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_health"
+            referencedColumns: ["manufacturer_id"]
+          },
+        ]
+      }
+      subscriptions: {
+        Row: {
+          amount_paise: number
+          application_id: string | null
+          billing_cycle: string
+          created_at: string
+          current_period_end: string
+          current_period_start: string
+          id: string
+          manufacturer_id: string
+          plan_code: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount_paise: number
+          application_id?: string | null
+          billing_cycle: string
+          created_at?: string
+          current_period_end: string
+          current_period_start: string
+          id?: string
+          manufacturer_id: string
+          plan_code: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount_paise?: number
+          application_id?: string | null
+          billing_cycle?: string
+          created_at?: string
+          current_period_end?: string
+          current_period_start?: string
+          id?: string
+          manufacturer_id?: string
+          plan_code?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "tenant_applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscriptions_manufacturer_id_fkey"
+            columns: ["manufacturer_id"]
+            isOneToOne: true
+            referencedRelation: "manufacturers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscriptions_manufacturer_id_fkey"
+            columns: ["manufacturer_id"]
+            isOneToOne: true
+            referencedRelation: "v_ai_health"
+            referencedColumns: ["manufacturer_id"]
+          },
+          {
+            foreignKeyName: "subscriptions_plan_code_fkey"
+            columns: ["plan_code"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      tenant_applications: {
+        Row: {
+          accepted_terms_at: string
+          activated_at: string | null
+          activated_by: string | null
+          address: string | null
+          amount_paise: number
+          billing_cycle: string
+          city: string | null
+          company_email: string | null
+          company_name: string
+          company_phone: string | null
+          created_at: string
+          gstin: string | null
+          id: string
+          ip_hash: string | null
+          legal_name: string | null
+          manufacturer_id: string | null
+          owner_email: string
+          owner_name: string
+          owner_phone: string
+          owner_user_id: string | null
+          plan_code: string
+          rejected_at: string | null
+          rejected_by: string | null
+          rejection_reason: string | null
+          state: string
+          state_code: string | null
+          status: string
+          status_token_hash: string
+          terms_version: string
+          updated_at: string
+          user_agent: string | null
+          whatsapp_display_number: string | null
+        }
+        Insert: {
+          accepted_terms_at: string
+          activated_at?: string | null
+          activated_by?: string | null
+          address?: string | null
+          amount_paise: number
+          billing_cycle: string
+          city?: string | null
+          company_email?: string | null
+          company_name: string
+          company_phone?: string | null
+          created_at?: string
+          gstin?: string | null
+          id?: string
+          ip_hash?: string | null
+          legal_name?: string | null
+          manufacturer_id?: string | null
+          owner_email: string
+          owner_name: string
+          owner_phone: string
+          owner_user_id?: string | null
+          plan_code: string
+          rejected_at?: string | null
+          rejected_by?: string | null
+          rejection_reason?: string | null
+          state: string
+          state_code?: string | null
+          status?: string
+          status_token_hash: string
+          terms_version: string
+          updated_at?: string
+          user_agent?: string | null
+          whatsapp_display_number?: string | null
+        }
+        Update: {
+          accepted_terms_at?: string
+          activated_at?: string | null
+          activated_by?: string | null
+          address?: string | null
+          amount_paise?: number
+          billing_cycle?: string
+          city?: string | null
+          company_email?: string | null
+          company_name?: string
+          company_phone?: string | null
+          created_at?: string
+          gstin?: string | null
+          id?: string
+          ip_hash?: string | null
+          legal_name?: string | null
+          manufacturer_id?: string | null
+          owner_email?: string
+          owner_name?: string
+          owner_phone?: string
+          owner_user_id?: string | null
+          plan_code?: string
+          rejected_at?: string | null
+          rejected_by?: string | null
+          rejection_reason?: string | null
+          state?: string
+          state_code?: string | null
+          status?: string
+          status_token_hash?: string
+          terms_version?: string
+          updated_at?: string
+          user_agent?: string | null
+          whatsapp_display_number?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tenant_applications_manufacturer_id_fkey"
+            columns: ["manufacturer_id"]
+            isOneToOne: false
+            referencedRelation: "manufacturers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tenant_applications_manufacturer_id_fkey"
+            columns: ["manufacturer_id"]
+            isOneToOne: false
+            referencedRelation: "v_ai_health"
+            referencedColumns: ["manufacturer_id"]
+          },
+          {
+            foreignKeyName: "tenant_applications_plan_code_fkey"
+            columns: ["plan_code"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "tenant_applications_state_code_fkey"
+            columns: ["state_code"]
+            isOneToOne: false
+            referencedRelation: "india_states"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
       territories: {
         Row: {
           cities: string[]
@@ -2954,6 +3290,47 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_ai_health"
             referencedColumns: ["manufacturer_id"]
+          },
+        ]
+      }
+      waitlist_entries: {
+        Row: {
+          application_id: string | null
+          company: string | null
+          created_at: string
+          email: string
+          id: number
+          name: string | null
+          phone: string | null
+          source: string
+        }
+        Insert: {
+          application_id?: string | null
+          company?: string | null
+          created_at?: string
+          email: string
+          id?: never
+          name?: string | null
+          phone?: string | null
+          source?: string
+        }
+        Update: {
+          application_id?: string | null
+          company?: string | null
+          created_at?: string
+          email?: string
+          id?: never
+          name?: string | null
+          phone?: string | null
+          source?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "waitlist_entries_application_fk"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "tenant_applications"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -3162,6 +3539,10 @@ export type Database = {
         Args: { p_code: string; p_field?: string; p_message: string }
         Returns: undefined
       }
+      application_status: {
+        Args: { p_status_token_hash: string }
+        Returns: Json
+      }
       approve_outreach: {
         Args: { p_prospect_ids: string[]; p_rep?: string }
         Returns: Json
@@ -3195,6 +3576,10 @@ export type Database = {
         }
       }
       claim_outbound_message: { Args: { p_message: string }; Returns: Json }
+      complete_tenant_activation: {
+        Args: { p_actor?: string; p_application: string; p_owner_user: string }
+        Returns: Json
+      }
       compute_reorders: { Args: never; Returns: number }
       confirm_document: {
         Args: { p_approved_for_sharing?: boolean; p_document: string }
@@ -3327,6 +3712,17 @@ export type Database = {
       is_manager: { Args: never; Returns: boolean }
       is_system_admin: { Args: never; Returns: boolean }
       is_trusted: { Args: never; Returns: boolean }
+      join_waitlist: {
+        Args: {
+          p_application?: string
+          p_company?: string
+          p_email: string
+          p_name?: string
+          p_phone?: string
+          p_source?: string
+        }
+        Returns: Json
+      }
       jwt_claims: { Args: never; Returns: Json }
       launch_campaign: {
         Args: { p_campaign: string; p_min_fit?: number }
@@ -3451,6 +3847,15 @@ export type Database = {
       pick_rep: { Args: { p_manufacturer: string }; Returns: string }
       process_approval_timers: { Args: never; Returns: number }
       process_due_followups: { Args: never; Returns: number }
+      provision_tenant_from_application: {
+        Args: {
+          p_application: string
+          p_payment_ref?: string
+          p_provider?: string
+        }
+        Returns: Json
+      }
+      public_stats: { Args: never; Returns: Json }
       queue_delete: {
         Args: { p_msg_id: number; p_queue: string }
         Returns: boolean
@@ -3491,6 +3896,10 @@ export type Database = {
           p_quotation?: string
         }
         Returns: string
+      }
+      reject_tenant_application: {
+        Args: { p_application: string; p_reason: string }
+        Returns: Json
       }
       rep_can_see: { Args: { p_prospect: string }; Returns: boolean }
       rep_can_see_conversation: {
@@ -3620,6 +4029,23 @@ export type Database = {
         }
         Returns: Json
       }
+      submit_tenant_application: {
+        Args: {
+          p: Json
+          p_ip_hash?: string
+          p_status_token_hash: string
+          p_user_agent?: string
+        }
+        Returns: Json
+      }
+      sysadmin_connect_whatsapp: {
+        Args: {
+          p_display_number?: string
+          p_manufacturer: string
+          p_phone_number_id: string
+        }
+        Returns: Json
+      }
       sysadmin_dead_letters: {
         Args: { p_limit?: number }
         Returns: {
@@ -3665,6 +4091,7 @@ export type Database = {
       sysadmin_tenants: {
         Args: never
         Returns: {
+          billing_cycle: string
           campaigns: number
           city: string
           created_at: string
@@ -3672,8 +4099,10 @@ export type Database = {
           id: string
           legal_name: string
           name: string
+          plan_code: string
           products: number
           state: string
+          subscription_status: string
           users: number
           whatsapp_display_number: string
           whatsapp_phone_number_id: string
@@ -3686,6 +4115,10 @@ export type Database = {
           p_roles: Database["public"]["Enums"]["app_role"][]
         }
         Returns: string[]
+      }
+      undo_tenant_provision: {
+        Args: { p_application: string }
+        Returns: undefined
       }
       update_fit_weights: { Args: { p_weights: Json }; Returns: number }
       update_message_status: {
@@ -3712,6 +4145,7 @@ export type Database = {
         Args: { p_fields: Json; p_id: string; p_reason?: string }
         Returns: Json
       }
+      waitlist_position: { Args: { p_email: string }; Returns: number }
       wake_worker: {
         Args: { p_function: string; p_queue: string }
         Returns: boolean
@@ -3945,6 +4379,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       app_role: ["owner", "sales_head", "rep", "system_admin"],

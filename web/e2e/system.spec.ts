@@ -7,6 +7,7 @@ test("the system admin lands on platform health and sees no buyer data", async (
   await expect(page.getByRole("heading", { name: "Platform health" })).toBeVisible();
   await expect(page.getByText(/no buyer or conversation data/i)).toBeVisible();
   for (const [path, heading] of [
+    ["/system/applications", "Applications"],
     ["/system/tenants", "Tenants"],
     ["/system/sources", "Sources"],
     ["/system/templates", "Templates"],
