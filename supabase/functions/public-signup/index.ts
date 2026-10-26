@@ -36,13 +36,141 @@ const rupees = (paise: number) => `₹${(paise / 100).toLocaleString("en-IN")}`;
 async function sendReceivedEmail(to: string, name: string, statusUrl: string, r: SubmitResult) {
   const key = config.resendKey();
   if (!key) return false;
-  const html = `<p>Namaste ${name},</p>
-<p>Thank you for choosing Distrik. We have received your application for the <strong>${r.plan_name}</strong> plan
-(${r.billing_cycle}, ${rupees(r.amount_paise)} + GST).</p>
-<p>Online payment is coming soon. You are <strong>#${r.waitlist_position}</strong> on the waitlist, and we will email you
-a sign in link as soon as your workspace is ready.</p>
-<p><a href="${statusUrl}">Check your application status</a></p>
-<p>Team Distrik</p>`;
+  const safeName = name ? name.replace(/[&<>"']/g, "") : "Manufacturer";
+  const safeStatusUrl = statusUrl.replace(/[&<>"']/g, "");
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application Received &mdash; Distrik</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #1e293b;">
+  <div style="display: none; max-height: 0px; overflow: hidden;">
+    We have received your application for the ${r.plan_name} plan. You are #${r.waitlist_position} on the waitlist.
+  </div>
+
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #0f172a; padding: 36px 16px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 560px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);">
+          
+          <!-- Top Accent Banner -->
+          <tr>
+            <td style="height: 6px; background: linear-gradient(90deg, #0d9488 0%, #14b8a6 50%, #06b6d4 100%);"></td>
+          </tr>
+
+          <!-- Header -->
+          <tr>
+            <td style="padding: 28px 32px 18px; border-bottom: 1px solid #f1f5f9;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td>
+                    <table role="presentation" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td style="background-color: #0f766e; color: #ffffff; width: 32px; height: 32px; border-radius: 8px; text-align: center; font-weight: 800; font-size: 18px; line-height: 32px;">
+                          D
+                        </td>
+                        <td style="padding-left: 10px;">
+                          <span style="font-size: 20px; font-weight: 700; color: #0f172a; letter-spacing: -0.5px;">Distrik</span>
+                          <span style="font-size: 11px; font-weight: 500; color: #64748b; margin-left: 8px; text-transform: uppercase;">Sales OS</span>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td align="right">
+                    <span style="display: inline-block; background-color: #ccfbf1; color: #0f766e; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; padding: 4px 10px; border-radius: 9999px;">
+                      Waitlist #${r.waitlist_position}
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding: 32px 32px 28px;">
+              <p style="margin: 0 0 12px; font-size: 15px; color: #64748b;">
+                Namaste <strong>${safeName}</strong>,
+              </p>
+
+              <h2 style="margin: 0 0 14px; font-size: 22px; font-weight: 700; color: #0f172a; line-height: 1.3;">
+                We have received your application
+              </h2>
+
+              <p style="margin: 0 0 20px; font-size: 15px; line-height: 1.6; color: #475569;">
+                Thank you for applying to Distrik! We are onboarding manufacturers in carefully paced batches to ensure dedicated support and seamless setup.
+              </p>
+
+              <!-- Order Summary Card -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; margin: 20px 0 24px; padding: 18px 20px;">
+                <tr>
+                  <td>
+                    <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">
+                      Selected Plan
+                    </div>
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td style="font-size: 18px; font-weight: 700; color: #0f172a;">
+                          ${r.plan_name} Plan
+                        </td>
+                        <td align="right" style="font-size: 18px; font-weight: 700; color: #0f766e;">
+                          ${rupees(r.amount_paise)} <span style="font-size: 12px; font-weight: normal; color: #64748b;">+ GST</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="font-size: 13px; color: #64748b; padding-top: 4px;">
+                          Billing: <span style="text-transform: capitalize; color: #334155; font-weight: 500;">${r.billing_cycle}</span>
+                        </td>
+                        <td align="right" style="font-size: 13px; color: #64748b; padding-top: 4px;">
+                          Waitlist rank: <strong style="color: #0f172a;">#${r.waitlist_position}</strong>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin: 0 0 24px; font-size: 14px; line-height: 1.6; color: #475569;">
+                Online payment is being enabled soon. You do not need to make any payment right now. As soon as your workspace is ready, we will email you an instant sign-in link to open your dashboard.
+              </p>
+
+              <!-- CTA Button -->
+              <div style="text-align: center; margin: 28px 0 16px;">
+                <a href="${safeStatusUrl}"
+                   style="display: inline-block; background-color: #0f766e; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 28px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(15, 118, 110, 0.25);">
+                  Check Application Status &rarr;
+                </a>
+              </div>
+
+              <p style="margin: 20px 0 0; font-size: 12px; color: #94a3b8; text-align: center;">
+                Save this link to track your status anytime: <br>
+                <a href="${safeStatusUrl}" style="color: #0f766e; word-break: break-all;">${safeStatusUrl}</a>
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 20px 32px; background-color: #f8fafc; border-top: 1px solid #f1f5f9; text-align: center;">
+              <p style="margin: 0 0 4px; font-size: 12px; color: #64748b;">
+                Distrik &middot; AI Sales OS for Indian Manufacturers &middot; <a href="https://distrik.in" style="color: #0f766e; text-decoration: none;">distrik.in</a>
+              </p>
+              <p style="margin: 0; font-size: 11px; color: #94a3b8;">
+                Have questions? Reply to this email or visit our <a href="https://distrik.in" style="color: #64748b;">help center</a>.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json", "Idempotency-Key": `application-${r.application_id}-${r.updated ? Date.now() : "new"}` },

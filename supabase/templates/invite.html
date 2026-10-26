@@ -1,29 +1,132 @@
-<!doctype html>
-<html>
-  <body style="margin:0;padding:24px;background:#f7f7f4;font-family:Arial,Helvetica,sans-serif;color:#1c1d1a">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:560px;margin:0 auto;background:#ffffff;border:1px solid #e3e3dc;border-radius:10px">
-      <tr>
-        <td style="padding:28px 28px 8px">
-          <p style="margin:0 0 4px;font-size:20px;font-weight:bold;color:#0f766e">Distrik</p>
-          <p style="margin:0;font-size:13px;color:#63655e">AI Sales OS for Indian manufacturers</p>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding:16px 28px">
-          <h1 style="margin:0 0 12px;font-size:20px">Your Distrik workspace is ready</h1>
-          <p style="margin:0 0 16px;font-size:15px;line-height:1.5">
-            You have been invited to Distrik. Use the button below to sign in, set a password, and open your workspace.
-          </p>
-          <p style="margin:0 0 20px">
-            <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=invite"
-               style="display:inline-block;background:#0f766e;color:#ffffff;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:8px">
-              Open my workspace
-            </a>
-          </p>
-          <p style="margin:0 0 8px;font-size:13px;color:#63655e">This link works once and expires in 24 hours. If it has expired, sign in with your mobile number or ask for a new email link from the sign in page.</p>
-          <p style="margin:0;font-size:13px;color:#63655e">If you did not expect this email, you can ignore it.</p>
-        </td>
-      </tr>
-    </table>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Distrik Workspace is Ready</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #1e293b;">
+  <!-- Preview Text Spacing Hack -->
+  <div style="display: none; max-height: 0px; overflow: hidden;">
+    Your workspace on Distrik is ready. Sign in to start automating your sales pipeline.
+  </div>
+
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #0f172a; padding: 40px 16px;">
+    <tr>
+      <td align="center">
+        <!-- Main Container Card -->
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 560px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);">
+          
+          <!-- Top Accent Banner -->
+          <tr>
+            <td style="height: 6px; background: linear-gradient(90deg, #0d9488 0%, #14b8a6 50%, #06b6d4 100%);"></td>
+          </tr>
+
+          <!-- Header -->
+          <tr>
+            <td style="padding: 32px 36px 20px; border-bottom: 1px solid #f1f5f9;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td>
+                    <div style="display: inline-block; vertical-align: middle;">
+                      <table role="presentation" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td style="background-color: #0f766e; color: #ffffff; width: 36px; height: 36px; border-radius: 8px; text-align: center; font-weight: 800; font-size: 20px; line-height: 36px;">
+                            D
+                          </td>
+                          <td style="padding-left: 12px;">
+                            <span style="font-size: 22px; font-weight: 700; color: #0f172a; letter-spacing: -0.5px;">Distrik</span>
+                            <div style="font-size: 11px; font-weight: 500; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px;">AI Sales OS for Manufacturers</div>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Body Content -->
+          <tr>
+            <td style="padding: 36px 36px 24px;">
+              <div style="display: inline-block; background-color: #ccfbf1; color: #0f766e; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; border-radius: 12px; margin-bottom: 16px;">
+                Workspace Ready
+              </div>
+
+              <h1 style="margin: 0 0 16px; font-size: 24px; font-weight: 700; color: #0f172a; line-height: 1.3; letter-spacing: -0.5px;">
+                Your workspace is ready to launch
+              </h1>
+
+              <p style="margin: 0 0 20px; font-size: 15px; line-height: 1.6; color: #475569;">
+                Welcome to Distrik! Your manufacturer workspace has been provisioned. Click the button below to sign in, complete your setup, and start automating your lead capture and sales operations.
+              </p>
+
+              <!-- Feature Highlights Box -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; margin: 24px 0; padding: 18px 20px;">
+                <tr>
+                  <td>
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td style="padding: 6px 0; font-size: 14px; color: #334155;">
+                          <strong style="color: #0f766e;">✓</strong> Automated 24/7 WhatsApp lead capture & qualification
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 6px 0; font-size: 14px; color: #334155;">
+                          <strong style="color: #0f766e;">✓</strong> AI-driven price negotiations within your margin rules
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 6px 0; font-size: 14px; color: #334155;">
+                          <strong style="color: #0f766e;">✓</strong> Instant PDF quotation generation & purchase order parsing
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Action Button -->
+              <div style="text-align: center; margin: 32px 0 24px;">
+                <!--[if mso]>
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=invite" style="height:48px;v-text-anchor:middle;width:240px;" arcsize="18%" stroke="f" fillcolor="#0f766e">
+                <w:anchorlock/>
+                <center style="color:#ffffff;font-family:sans-serif;font-size:15px;font-weight:bold;">Open My Workspace &rarr;</center>
+                </v:roundrect>
+                <![endif]-->
+                <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=invite"
+                   style="mso-hide:all; display: inline-block; background-color: #0f766e; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(15, 118, 110, 0.3); transition: all 0.2s;">
+                  Open My Workspace &rarr;
+                </a>
+              </div>
+
+              <!-- Expiry & Fallback Link Note -->
+              <p style="margin: 24px 0 8px; font-size: 12px; line-height: 1.5; color: #94a3b8; text-align: center;">
+                This secure one-time activation link is valid for 24 hours.
+              </p>
+              <div style="background-color: #f8fafc; border-radius: 8px; padding: 12px; margin-top: 16px; word-break: break-all; font-size: 11px; color: #64748b; line-height: 1.4;">
+                <span style="font-weight: 600; color: #475569;">Button not working?</span> Copy and paste this URL into your browser:<br>
+                <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=invite" style="color: #0f766e; text-decoration: underline;">{{ .RedirectTo }}?token_hash={{ .TokenHash }}&amp;type=invite</a>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 24px 36px; background-color: #f8fafc; border-top: 1px solid #f1f5f9; text-align: center;">
+              <p style="margin: 0 0 6px; font-size: 12px; color: #64748b;">
+                Distrik &middot; AI Sales OS for Indian Manufacturers &middot; <a href="https://distrik.in" style="color: #0f766e; text-decoration: none;">distrik.in</a>
+              </p>
+              <p style="margin: 0; font-size: 11px; color: #94a3b8;">
+                If you did not request this invitation, you can safely ignore this email.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
 </html>
