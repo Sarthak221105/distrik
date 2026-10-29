@@ -13,10 +13,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           aria-hidden
           className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(36rem_22rem_at_100%_0%,rgb(108_132_252/0.45),transparent_70%),radial-gradient(28rem_18rem_at_0%_100%,rgb(40_81_235/0.4),transparent_70%)]"
         />
-        <div className="flex items-center gap-2 font-display text-xl font-medium">
-          <LogoMark className="size-8" />
-          Distrik
-        </div>
+        <Logo variant="white" className="w-fit" />
         <div className="grid max-w-md gap-4">
           <h1 className="text-h3 font-medium sm:text-[40px] sm:leading-[1.15]">Your AI sales employee for new markets.</h1>
           <p className="text-white/80">

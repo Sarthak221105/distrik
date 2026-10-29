@@ -1,176 +1,190 @@
 import type { CSSProperties } from "react";
-import { Bell, Bot, Check, CheckCheck, MessageCircle, Search, TrendingUp, TriangleAlert } from "lucide-react";
+import { Check, TriangleAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { GuardrailBar } from "./mockups";
-
-/*
- * The hero product shot: the owner dashboard as one labelled image. Names and
- * numbers are illustrative. Columns collapse on small screens so it stays
- * legible on a phone.
- */
-
-const kpis = [
-  { label: "Pending approvals", value: "4", note: "Waiting for you", tone: "text-warning" },
-  { label: "Leads to review", value: "48", note: "Bhopal · FMCG", tone: "text-primary" },
-  { label: "Conversations today", value: "26", note: "+8 vs yesterday", tone: "text-success" },
-  { label: "Orders this month", value: "₹4.6L", note: "12 orders", tone: "text-foreground" },
-] as const;
-
-const funnel = [
-  { stage: "Identified", n: 212, w: 100 },
-  { stage: "Approved", n: 143, w: 67 },
-  { stage: "Conversations", n: 61, w: 29 },
-  { stage: "Quoted", n: 24, w: 11 },
-  { stage: "Ordered", n: 12, w: 6 },
-] as const;
-
-const week = [38, 52, 46, 64, 72, 58, 81];
+import { LogoImage } from "./logo";
+import { Reveal } from "./reveal";
+import { Container } from "./section-heading";
+import { ScrollTilt } from "./motion";
 
 export function ProductShowcase({ className }: { className?: string }) {
   return (
     <div
       role="img"
-      aria-label="Illustration of the Distrik owner dashboard: four approvals waiting, 48 leads to review, 26 WhatsApp conversations today and ₹4.6 lakh of orders this month. An approval card shows a buyer asking ₹540 a jar against a ₹558 floor, next to a sales funnel and a live WhatsApp chat handled by the AI."
-      className={cn("overflow-hidden rounded-[22px] bg-surface text-left shadow-xl ring-1 ring-black/5 dark:ring-white/10", className)}
+      aria-label="A preview of the Distrik manufacturer dashboard"
+      className={cn(
+        "overflow-hidden rounded-3xl border border-border/80 bg-surface text-left shadow-xl transition-all duration-300 hover:shadow-2xl",
+        className,
+      )}
     >
-      {/* app top bar */}
-      <div className="flex items-center gap-3 border-b border-border px-4 py-3 sm:px-6">
-        <span className="flex items-center gap-2 font-display text-sm font-medium whitespace-nowrap sm:text-base">
-          <span className="flex size-6 items-center justify-center rounded-md bg-linear-to-br from-primary to-periwinkle text-[11px] font-semibold text-white">
-            D
-          </span>
-          Shakti Foods
-        </span>
-        <span className="mx-auto hidden items-center gap-1 rounded-full bg-surface-muted p-1 text-[11px] font-medium whitespace-nowrap text-muted-foreground lg:flex">
-          <span className="rounded-full bg-band px-3 py-1 text-white dark:bg-primary dark:text-primary-foreground">Overview</span>
-          <span className="px-3 py-1">Lead Review</span>
-          <span className="px-3 py-1">Approvals</span>
-          <span className="px-3 py-1">Pipeline</span>
-          <span className="px-3 py-1">Orders</span>
-        </span>
-        <span className="ml-auto flex items-center gap-1.5 lg:ml-0">
-          {[Search, Bell].map((Icon, i) => (
-            <span key={i} className="flex size-7 items-center justify-center rounded-full bg-surface-muted text-muted-foreground">
-              <Icon className="size-3.5" aria-hidden />
-            </span>
-          ))}
-          <span className="flex size-7 items-center justify-center rounded-full bg-primary-soft text-[10px] font-semibold text-primary">AS</span>
+      {/* Browser header bar matching screenshot (3 dots + app.distrik.in / dashboard) */}
+      <div className="flex items-center gap-2 border-b border-border/70 bg-surface-muted/40 px-5 py-3.5">
+        <div className="flex items-center gap-2" aria-hidden>
+          <span className="size-3 rounded-full bg-border" />
+          <span className="size-3 rounded-full bg-border" />
+          <span className="size-3 rounded-full bg-border" />
+        </div>
+        <span className="ml-3 font-mono text-xs text-muted-foreground">
+          app.distrik.in / dashboard
         </span>
       </div>
 
-      <div className="grid gap-4 bg-surface-muted/60 p-4 sm:gap-5 sm:p-6 lg:p-8">
-        <div className="flex flex-wrap items-end justify-between gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-[220px_1fr]">
+        {/* Left Sidebar */}
+        <div className="border-b border-border/60 p-5 md:border-b-0 md:border-r bg-surface-muted/10">
+          {/* Logo item */}
+          <div className="flex items-center">
+            <LogoImage className="h-6 w-auto" />
+          </div>
+
+          {/* Nav links */}
+          <div className="mt-6 space-y-1.5">
+            <div className="rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow-2xs">
+              Overview
+            </div>
+            <div className="rounded-xl px-3.5 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-surface-muted transition-colors">
+              Lead Review
+            </div>
+            <div className="rounded-xl px-3.5 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-surface-muted transition-colors">
+              WhatsApp Chats
+            </div>
+            <div className="rounded-xl px-3.5 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-surface-muted transition-colors">
+              AI Voice Calls
+            </div>
+            <div className="rounded-xl px-3.5 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-surface-muted transition-colors">
+              Approvals
+            </div>
+            <div className="rounded-xl px-3.5 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-surface-muted transition-colors">
+              Quotations & POs
+            </div>
+            <div className="rounded-xl px-3.5 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-surface-muted transition-colors">
+              Commercial Rules
+            </div>
+          </div>
+        </div>
+
+        {/* Right Main Dashboard Area */}
+        <div className="p-6 sm:p-7">
+          {/* Welcome heading matching screenshot */}
           <div>
-            <p className="font-display text-xl font-medium sm:text-[28px] sm:leading-tight">Namaste, Anita!</p>
-            <p className="text-xs text-muted-foreground sm:text-sm">Here is what needs you today, and how Bhopal is moving.</p>
-          </div>
-          <span className="hidden rounded-xl bg-primary px-3 py-2 text-xs font-medium text-primary-foreground shadow-sm sm:inline-flex">
-            + Start sales
-          </span>
-        </div>
-
-        {/* KPI row */}
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-          {kpis.map((k, i) => (
-            <div
-              key={k.label}
-              className="animate-enter rounded-2xl bg-surface p-3 shadow-sm sm:p-4"
-              style={{ "--d": `${900 + i * 90}ms` } as CSSProperties}
-            >
-              <p className="text-[11px] text-muted-foreground sm:text-xs">{k.label}</p>
-              <p className={cn("mt-1 font-display text-2xl font-medium tabular sm:text-[30px]", k.tone)}>{k.value}</p>
-              <p className="text-[11px] text-muted-foreground">{k.note}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="grid gap-4 sm:gap-5 lg:grid-cols-[1.25fr_1fr_1fr]">
-          {/* approval */}
-          <div className="grid content-start gap-3 rounded-2xl bg-surface p-4 shadow-sm sm:p-5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1 rounded-full bg-warning-soft px-2 py-0.5 text-[11px] font-medium text-warning">
-                <TriangleAlert className="size-3" aria-hidden /> Needs approval
-              </span>
-              <span className="ml-auto text-[11px] text-muted-foreground">Expires in 19 h</span>
-            </div>
-            <div>
-              <p className="text-sm font-semibold">Mehta Distributors asks ₹540 / jar</p>
-              <p className="text-xs text-muted-foreground">Mustard oil 5 L · 100 jars · deal ₹54,000 + GST</p>
-            </div>
-            <GuardrailBar />
-            <p className="flex gap-1.5 rounded-xl bg-ai-soft p-2.5 text-[11px] leading-snug text-ai">
-              <Bot className="size-3.5 shrink-0" aria-hidden />
-              Buys 100 jars a month, 2× your Bhopal average. Margin stays at 8.3%.
+            <h3 className="font-editorial-serif text-2xl sm:text-3xl font-normal italic text-foreground">
+              Good morning, Anita.
+            </h3>
+            <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
+              Wednesday · Here&apos;s what&apos;s happening today in Bhopal.
             </p>
-            <div className="flex flex-wrap gap-2">
-              <span className="inline-flex h-8 items-center gap-1 rounded-lg bg-success px-3 text-xs font-medium text-white">
-                <Check className="size-3.5" aria-hidden /> Approve ₹540
-              </span>
-              <span className="inline-flex h-8 items-center rounded-lg border border-border bg-surface px-3 text-xs font-medium">Counter ₹550</span>
+          </div>
+
+          {/* Three Stat Boxes matching screenshot */}
+          <div className="mt-6 grid grid-cols-3 gap-3.5">
+            <div className="rounded-2xl border border-border/70 bg-surface-muted/30 p-4 transition-all hover:border-accent/40 hover:bg-surface">
+              <p className="font-editorial-serif text-3xl font-normal text-foreground sm:text-4xl">48</p>
+              <p className="mt-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Leads Qualified
+              </p>
+              <p className="mt-0.5 text-xs font-medium text-success">+14% this week</p>
+            </div>
+
+            <div className="rounded-2xl border border-border/70 bg-surface-muted/30 p-4 transition-all hover:border-accent/40 hover:bg-surface">
+              <p className="font-editorial-serif text-3xl font-normal text-foreground sm:text-4xl">26</p>
+              <p className="mt-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Active Buyers
+              </p>
+              <p className="mt-0.5 text-xs font-medium text-accent">+8 conversations</p>
+            </div>
+
+            <div className="rounded-2xl border border-border/70 bg-surface-muted/30 p-4 transition-all hover:border-accent/40 hover:bg-surface">
+              <p className="font-editorial-serif text-3xl font-normal text-foreground sm:text-4xl">4</p>
+              <p className="mt-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Needs Approval
+              </p>
+              <p className="mt-0.5 text-xs font-medium text-warning">Waiting for you</p>
             </div>
           </div>
 
-          {/* funnel + weekly bars */}
-          <div className="hidden content-start gap-4 rounded-2xl bg-surface p-4 shadow-sm sm:grid sm:p-5">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold">Funnel · Bhopal</p>
-              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-success">
-                <TrendingUp className="size-3" aria-hidden /> 5.6% to order
-              </span>
-            </div>
-            <div className="grid gap-2">
-              {funnel.map((f, i) => (
-                <div key={f.stage} className="grid grid-cols-[84px_1fr_32px] items-center gap-2 text-[11px]">
-                  <span className="text-muted-foreground">{f.stage}</span>
-                  <span className="h-2 overflow-hidden rounded-full bg-surface-muted">
-                    <span
-                      className="animate-grow block h-full origin-left rounded-full bg-linear-to-r from-primary to-periwinkle"
-                      style={{ width: `${f.w}%`, "--d": `${1100 + i * 80}ms` } as CSSProperties}
-                    />
+          {/* Two bottom cards matching screenshot */}
+          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            {/* Recent Activity */}
+            <div className="rounded-2xl border border-border/70 bg-surface-muted/20 p-5">
+              <div className="text-xs font-semibold uppercase tracking-wider text-accent">
+                Recent Activity
+              </div>
+              <ul className="mt-3 space-y-2.5 text-xs sm:text-[13px]">
+                <li className="flex items-start justify-between gap-2">
+                  <span className="text-foreground">
+                    <span className="font-semibold text-accent">● Priya</span> asked for mustard oil 100 jars
                   </span>
-                  <span className="text-right font-semibold tabular">{f.n}</span>
-                </div>
-              ))}
+                  <span className="shrink-0 text-[11px] text-muted-foreground">2m</span>
+                </li>
+                <li className="flex items-start justify-between gap-2">
+                  <span className="text-foreground">
+                    <span className="font-semibold text-accent">● Balaji Kirana</span> AI voice call completed
+                  </span>
+                  <span className="shrink-0 text-[11px] text-muted-foreground">14m</span>
+                </li>
+                <li className="flex items-start justify-between gap-2">
+                  <span className="text-foreground">
+                    <span className="font-semibold text-accent">● GST Quote</span> sent to Shree Ganesh (₹558/jar)
+                  </span>
+                  <span className="shrink-0 text-[11px] text-muted-foreground">28m</span>
+                </li>
+              </ul>
             </div>
-            <div className="flex h-20 items-end gap-1.5 border-t border-border pt-3">
-              {week.map((h, i) => (
-                <span key={i} className="flex flex-1 flex-col items-center gap-1">
-                  <span
-                    className={cn("animate-rise w-full origin-bottom rounded-md", i === week.length - 1 ? "bg-primary" : "bg-primary-soft")}
-                    style={{ height: `${h}%`, "--d": `${1200 + i * 60}ms` } as CSSProperties}
-                  />
-                  <span className="text-[9px] text-muted-foreground">{"MTWTFSS"[i]}</span>
-                </span>
-              ))}
-            </div>
-          </div>
 
-          {/* live chat */}
-          <div className="hidden content-start gap-2.5 rounded-2xl bg-surface p-4 shadow-sm lg:grid lg:p-5">
-            <div className="flex items-center gap-2">
-              <MessageCircle className="size-4 text-success" aria-hidden />
-              <p className="text-sm font-semibold">Live on WhatsApp</p>
-              <span className="ml-auto flex items-center gap-1 text-[11px] text-muted-foreground">
-                <span className="size-1.5 animate-pulse rounded-full bg-success" aria-hidden /> AI replying
-              </span>
+            {/* Top Questions / Discussions this week */}
+            <div className="rounded-2xl border border-border/70 bg-surface-muted/20 p-5">
+              <div className="text-xs font-semibold uppercase tracking-wider text-accent">
+                Top Questions This Week
+              </div>
+              <ul className="mt-3 space-y-2 font-editorial-serif text-sm italic text-foreground/90">
+                <li>• What is the distributor MOQ for Bhopal?</li>
+                <li>• How to raise GST purchase order?</li>
+                <li>• Can you offer credit terms for 100 cases?</li>
+                <li>• Vendor onboarding steps for FMCG brand?</li>
+              </ul>
             </div>
-            <p className="max-w-[85%] rounded-2xl rounded-tl-sm bg-surface-muted px-3 py-2 text-[12px] leading-snug">
-              Rate kya hai 5L mustard oil ka? 100 jar chahiye
-            </p>
-            <p className="ml-auto max-w-[88%] rounded-2xl rounded-tr-sm bg-primary-soft px-3 py-2 text-[12px] leading-snug">
-              <span className="mb-0.5 flex items-center gap-1 text-[9px] font-semibold uppercase tracking-wide text-ai">
-                <Bot className="size-3" aria-hidden /> Distrik AI
-              </span>
-              ₹575 per jar for 100 jars, plus 5% GST. Catalogue bhej raha hoon.
-            </p>
-            <p className="max-w-[60%] rounded-2xl rounded-tl-sm bg-surface-muted px-3 py-2 text-[12px]">540 me de do</p>
-            <p className="ml-auto flex max-w-[88%] items-end gap-1 rounded-2xl rounded-tr-sm bg-primary-soft px-3 py-2 text-[12px] leading-snug">
-              Best rate ₹558 hai. ₹540 team se confirm karta hoon.
-              <CheckCheck className="size-3 shrink-0 text-info" aria-hidden />
-            </p>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+export function DashboardPreview() {
+  return (
+    <section aria-labelledby="showcase-title" className="scroll-mt-20 py-20 sm:py-28 lg:py-36">
+      <Container>
+        <Reveal>
+          <div className="mx-auto max-w-6xl 2xl:max-w-7xl text-center mb-14 sm:mb-20">
+            <span className="inline-flex items-center gap-2.5 rounded-full border border-border bg-surface px-5 py-2 text-xs sm:text-base font-semibold text-foreground shadow-2xs transition-all duration-300 hover:border-accent/40">
+              <span className="size-2.5 rounded-full bg-accent animate-pulse-dot" />
+              Manufacturer Workspace
+            </span>
+            <h2 id="showcase-title" className="mt-6 text-[38px] sm:text-[58px] md:text-[72px] lg:text-[84px] xl:text-[94px] font-bold tracking-tight text-foreground leading-[1.03] text-balance">
+              Full visibility into every active market,{" "}
+              <span className="font-editorial-serif italic font-normal text-accent block sm:inline">
+                lead, and order.
+              </span>
+            </h2>
+            <p className="mt-8 text-xl text-muted-foreground sm:text-2xl lg:text-[28px] leading-relaxed text-pretty max-w-5xl mx-auto">
+              One central command center to monitor live WhatsApp chats, approve exceptions, and track deals.
+            </p>
+          </div>
+        </Reveal>
+
+        <Reveal className="relative mx-auto max-w-5xl">
+          <ScrollTilt>
+            <ProductShowcase />
+          </ScrollTilt>
+
+          {/* Floating black pill badge matching screenshot */}
+          <div className="mt-5 flex justify-end">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-xs sm:text-sm font-medium text-primary-foreground shadow-lg transition-transform hover:scale-105">
+              <span className="size-2 rounded-full bg-accent animate-pulse-dot" />
+              A preview of the Manufacturer dashboard
+            </div>
+          </div>
+        </Reveal>
+      </Container>
+    </section>
   );
 }

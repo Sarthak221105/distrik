@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -17,7 +17,7 @@ import { CONTAINER } from "./section-heading";
 import { policyLinks, productLinks } from "./links";
 
 const navLink =
-  "rounded-md px-3 py-2 text-base font-medium text-muted-foreground transition-colors hover:bg-surface-muted hover:text-foreground";
+  "rounded-full px-4 py-2 text-[15px] sm:text-base font-medium text-muted-foreground transition-all duration-200 hover:text-foreground hover:bg-surface-muted";
 
 export function SiteNav() {
   const [open, setOpen] = useState(false);
@@ -49,19 +49,19 @@ export function SiteNav() {
   const close = () => setOpen(false);
 
   return (
-    <header className={cn(CONTAINER, "sticky top-0 z-40 pt-3 sm:pt-4")}>
+    <header className={cn(CONTAINER, "sticky top-0 z-40 pt-3 sm:pt-5")}>
       <nav
         aria-label="Main"
         className={cn(
-          "flex h-16 items-center gap-4 rounded-2xl border px-3 transition-[background-color,border-color,box-shadow,height] duration-500 ease-[cubic-bezier(.22,1,.36,1)] sm:h-[72px] sm:px-5",
+          "w-full flex h-[72px] sm:h-20 items-center gap-5 rounded-full border px-5 sm:px-8 transition-all duration-300",
           scrolled || open
-            ? "border-white/70 bg-surface/85 shadow-lg backdrop-blur-xl sm:h-16 dark:border-border"
-            : "border-white/60 bg-surface/55 shadow-sm backdrop-blur-md dark:border-border/60",
+            ? "border-border bg-surface/95 shadow-md backdrop-blur-md"
+            : "border-border/80 bg-surface/75 shadow-xs backdrop-blur-sm",
         )}
       >
         <Logo />
 
-        <ul className="ml-6 hidden items-center gap-1 lg:flex">
+        <ul className="ml-6 sm:ml-8 hidden items-center gap-1.5 lg:flex">
           {productLinks.map((l) => (
             <li key={l.href}>
               <Link href={l.href} className={navLink}>
@@ -72,9 +72,9 @@ export function SiteNav() {
           <li>
             <DropdownMenu>
               <DropdownMenuTrigger className={cn(navLink, "inline-flex items-center gap-1 data-[state=open]:text-foreground")}>
-                Policies <ChevronDown className="size-3.5" aria-hidden />
+                Policies <ChevronDown className="size-4" aria-hidden />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="min-w-56">
+              <DropdownMenuContent align="start" className="min-w-56 rounded-2xl border-border bg-surface shadow-lg">
                 {policyLinks.map((l) => (
                   <DropdownMenuItem key={l.href} asChild>
                     <Link href={l.href}>{l.label}</Link>
@@ -89,19 +89,21 @@ export function SiteNav() {
           </li>
         </ul>
 
-        <div className="ml-auto hidden items-center gap-2 lg:flex">
-          <Link href="/login" className={navLink}>
+        <div className="ml-auto hidden items-center gap-4 lg:flex">
+          <Link href="/login" className="text-[15px] sm:text-base font-medium text-muted-foreground transition-colors hover:text-foreground">
             Sign in
           </Link>
-          <Button asChild className="btn-sheen h-11 rounded-xl bg-band px-5 text-base text-white hover:bg-band/90 dark:bg-primary dark:text-primary-foreground">
-            <Link href="/#pricing">Get started</Link>
+          <Button asChild className="btn-sheen group h-12 rounded-full bg-primary px-6 text-[15px] sm:text-base font-semibold text-primary-foreground shadow-xs transition-all duration-300 hover:bg-black hover:scale-105 hover:shadow-md active:scale-95">
+            <Link href="/#pricing">
+              Book a Demo &rarr;
+            </Link>
           </Button>
         </div>
 
         <Button
           variant="ghost"
           size="icon"
-          className="ml-auto lg:hidden"
+          className="ml-auto rounded-full lg:hidden"
           aria-expanded={open}
           aria-controls="mobile-menu"
           aria-label={open ? "Close menu" : "Open menu"}
@@ -114,29 +116,29 @@ export function SiteNav() {
       <div
         id="mobile-menu"
         hidden={!open}
-        className="mt-2 max-h-[calc(100dvh-6rem)] overflow-y-auto rounded-2xl border border-border bg-surface shadow-xl lg:hidden"
+        className="mt-2 max-h-[calc(100dvh-6rem)] overflow-y-auto rounded-3xl border border-border bg-surface p-4 shadow-xl lg:hidden"
       >
-        <div className="grid gap-1 p-3">
+        <div className="grid gap-1.5">
           {productLinks.map((l) => (
-            <Link key={l.href} href={l.href} onClick={close} className={cn(navLink, "text-base")}>
+            <Link key={l.href} href={l.href} onClick={close} className={cn(navLink, "text-base py-2")}>
               {l.label}
             </Link>
           ))}
           <p className="mt-3 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Policies</p>
           {policyLinks.map((l) => (
-            <Link key={l.href} href={l.href} onClick={close} className={cn(navLink, "text-base")}>
+            <Link key={l.href} href={l.href} onClick={close} className={cn(navLink, "text-base py-2")}>
               {l.label}
             </Link>
           ))}
           <div className="mt-4 grid grid-cols-2 gap-2 border-t border-border pt-4">
-            <Button asChild variant="outline" size="lg">
+            <Button asChild variant="outline" className="rounded-full">
               <Link href="/login" onClick={close}>
                 Sign in
               </Link>
             </Button>
-            <Button asChild size="lg">
+            <Button asChild className="rounded-full bg-primary text-white hover:bg-black">
               <Link href="/#pricing" onClick={close}>
-                Get started
+                Book a Demo
               </Link>
             </Button>
           </div>

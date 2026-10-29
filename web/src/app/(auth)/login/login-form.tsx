@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Mail, Phone, KeyRound } from "lucide-react";
+import { KeyRound, Mail, Phone } from "lucide-react";
 import { getSupabaseBrowser } from "@/lib/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Field, Input } from "@/components/ui/input";
@@ -21,14 +21,22 @@ export function LoginForm({ next, initialError }: { next?: string; initialError?
   const [error, setError] = useState<string | undefined>(initialError);
   const [info, setInfo] = useState<string>();
   const [busy, setBusy] = useState(false);
+
+  // Email form state
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [emailOtp, setEmailOtp] = useState("");
+  const [emailOtpSent, setEmailOtpSent] = useState(false);
+
+  // Phone form state
   const [phone, setPhone] = useState("");
-  const [otp, setOtp] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
+  const [phoneOtp, setPhoneOtp] = useState("");
+  const [phoneOtpSent, setPhoneOtpSent] = useState(false);
+
+  // Password form state
+  const [password, setPassword] = useState("");
 
   const done = () => {
-    router.replace(next && next.startsWith("/") ? next : "/");
+    router.replace(next && next.startsWith("/") && next !== "/" ? next : "/dashboard");
     router.refresh();
   };
 
@@ -53,19 +61,128 @@ export function LoginForm({ next, initialError }: { next?: string; initialError?
         </p>
       )}
       {info && <p className="rounded-lg bg-success-soft px-3 py-2 text-sm text-success">{info}</p>}
-      <Tabs defaultValue="phone">
+
+      <Tabs defaultValue="email">
         <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="email">
+            <Mail className="size-3.5" aria-hidden /> Email OTP
+          </TabsTrigger>
           <TabsTrigger value="phone">
             <Phone className="size-3.5" aria-hidden /> Mobile
-          </TabsTrigger>
-          <TabsTrigger value="magic">
-            <Mail className="size-3.5" aria-hidden /> Email
           </TabsTrigger>
           <TabsTrigger value="password">
             <KeyRound className="size-3.5" aria-hidden /> Password
           </TabsTrigger>
         </TabsList>
 
+        {/* Email OTP Sign In */}
+        <TabsContent value="email">
+          <form
+            className="grid gap-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              run(async () => {
+                const cleanEmail = email.trim().toLowerCase();
+                if (!cleanEmail) throw new Error("Please enter your work email");
+
+                if (!emailOtpSent) {
+                  const { error } = await supabase.auth.signInWithOtp({
+                    email: cleanEmail,
+                    options: { shouldCreateUser: false },
+                  });
+                  if (error) throw error;
+                  setEmailOtpSent(true);
+                  setInfo("We sent a 6-digit code to your email.");
+                } else {
+                  const cleanOtp = emailOtp.trim();
+                  if (!cleanOtp || cleanOtp.length !== 6) throw new Error("Please enter the 6-digit code");
+
+                  // Try standard email OTP
+                  let res = await supabase.auth.verifyOtp({
+                    email: cleanEmail,
+                    token: cleanOtp,
+                    type: "email",
+                  });
+
+                  // If standard email OTP fails, try invite type in case user is using their workspace activation code
+                  if (res.error) {
+                    const inviteRes = await supabase.auth.verifyOtp({
+                      email: cleanEmail,
+                      token: cleanOtp,
+                      type: "invite",
+                    });
+                    if (!inviteRes.error) {
+                      res = inviteRes;
+                    }
+                  }
+
+                  if (res.error) throw res.error;
+                  done();
+                }
+              });
+            }}
+          >
+            <Field label="Work email" htmlFor="login-email">
+              <Input
+                id="login-email"
+                type="email"
+                autoComplete="email"
+                placeholder="name@company.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={emailOtpSent}
+                required
+              />
+            </Field>
+
+            {emailOtpSent && (
+              <Field label="6-digit verification code" htmlFor="email-otp">
+                <Input
+                  id="email-otp"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  maxLength={6}
+                  placeholder="123456"
+                  value={emailOtp}
+                  onChange={(e) => setEmailOtp(e.target.value.replace(/\D/g, ""))}
+                  autoFocus
+                  required
+                />
+              </Field>
+            )}
+
+            <Button type="submit" loading={busy} size="lg">
+              {emailOtpSent ? "Verify and sign in" : "Send sign-in code"}
+            </Button>
+
+            <div className="flex items-center justify-between text-xs">
+              {emailOtpSent ? (
+                <Button
+                  type="button"
+                  variant="link"
+                  className="p-0 text-xs text-muted-foreground hover:text-foreground"
+                  onClick={() => {
+                    setEmailOtpSent(false);
+                    setEmailOtp("");
+                  }}
+                >
+                  Use a different email
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  variant="link"
+                  className="p-0 text-xs text-muted-foreground hover:text-foreground"
+                  onClick={() => setEmailOtpSent(true)}
+                >
+                  Have an invite / activation code?
+                </Button>
+              )}
+            </div>
+          </form>
+        </TabsContent>
+
+        {/* Mobile Phone OTP Sign In */}
         <TabsContent value="phone">
           <form
             className="grid gap-4"
@@ -74,16 +191,16 @@ export function LoginForm({ next, initialError }: { next?: string; initialError?
               run(async () => {
                 const normalized = normalizeIndianPhone(phone);
                 if (!normalized) throw new Error("Enter a 10 digit Indian mobile number");
-                if (!otpSent) {
+                if (!phoneOtpSent) {
                   const { error } = await supabase.auth.signInWithOtp({
                     phone: normalized,
                     options: { shouldCreateUser: false },
                   });
                   if (error) throw error;
-                  setOtpSent(true);
+                  setPhoneOtpSent(true);
                   setInfo("We sent a 6 digit code by SMS.");
                 } else {
-                  const { error } = await supabase.auth.verifyOtp({ phone: normalized, token: otp, type: "sms" });
+                  const { error } = await supabase.auth.verifyOtp({ phone: normalized, token: phoneOtp, type: "sms" });
                   if (error) throw error;
                   done();
                 }
@@ -98,74 +215,57 @@ export function LoginForm({ next, initialError }: { next?: string; initialError?
                 placeholder="98000 00001"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                disabled={otpSent}
+                disabled={phoneOtpSent}
               />
             </Field>
-            {otpSent && (
-              <Field label="Code" htmlFor="otp">
+            {phoneOtpSent && (
+              <Field label="6-digit code" htmlFor="phone-otp">
                 <Input
-                  id="otp"
+                  id="phone-otp"
                   inputMode="numeric"
                   autoComplete="one-time-code"
                   maxLength={6}
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
+                  placeholder="123456"
+                  value={phoneOtp}
+                  onChange={(e) => setPhoneOtp(e.target.value.replace(/\D/g, ""))}
                   autoFocus
                 />
               </Field>
             )}
             <Button type="submit" loading={busy} size="lg">
-              {otpSent ? "Verify and sign in" : "Send code"}
+              {phoneOtpSent ? "Verify and sign in" : "Send code"}
             </Button>
-            {otpSent && (
-              <Button type="button" variant="link" onClick={() => { setOtpSent(false); setOtp(""); }}>
+            {phoneOtpSent && (
+              <Button type="button" variant="link" onClick={() => { setPhoneOtpSent(false); setPhoneOtp(""); }}>
                 Use a different number
               </Button>
             )}
           </form>
         </TabsContent>
 
-        <TabsContent value="magic">
-          <form
-            className="grid gap-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              run(async () => {
-                const { error } = await supabase.auth.signInWithOtp({
-                  email,
-                  options: {
-                    shouldCreateUser: false,
-                    emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next ?? "/")}`,
-                  },
-                });
-                if (error) throw error;
-                setInfo("Check your inbox for a sign in link.");
-              });
-            }}
-          >
-            <Field label="Work email" htmlFor="magic-email">
-              <Input id="magic-email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            </Field>
-            <Button type="submit" loading={busy} size="lg">
-              Email me a link
-            </Button>
-          </form>
-        </TabsContent>
-
+        {/* Password Sign In */}
         <TabsContent value="password">
           <form
             className="grid gap-4"
             onSubmit={(e) => {
               e.preventDefault();
               run(async () => {
-                const { error } = await supabase.auth.signInWithPassword({ email, password });
+                const { error } = await supabase.auth.signInWithPassword({ email: email.trim().toLowerCase(), password });
                 if (error) throw error;
                 done();
               });
             }}
           >
-            <Field label="Email" htmlFor="email">
-              <Input id="email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <Field label="Email" htmlFor="pwd-email">
+              <Input
+                id="pwd-email"
+                type="email"
+                autoComplete="email"
+                placeholder="name@company.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </Field>
             <Field label="Password" htmlFor="password">
               <Input

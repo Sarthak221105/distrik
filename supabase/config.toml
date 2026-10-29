@@ -255,6 +255,10 @@ sender_name = "Distrik"
 subject = "Your Distrik workspace is ready"
 content_path = "./supabase/templates/invite.html"
 
+[auth.email.template.magic_link]
+subject = "Your Distrik sign-in code"
+content_path = "./supabase/templates/magic_link.html"
+
 # Uncomment to customize notification email template
 # [auth.email.notification.password_changed]
 # enabled = true

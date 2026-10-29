@@ -3,35 +3,35 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Distrik Workspace is Ready</title>
+  <title>Your Distrik Workspace Activation Code</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #1e293b;">
-  <!-- Preview Text Spacing Hack -->
+  <!-- Preview Text -->
   <div style="display: none; max-height: 0px; overflow: hidden;">
-    Your workspace on Distrik is ready. Sign in to start automating your sales pipeline.
+    Your Distrik workspace is ready. Use activation code {{ .Token }} to sign in.
   </div>
 
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #0f172a; padding: 40px 16px;">
     <tr>
       <td align="center">
         <!-- Main Container Card -->
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 560px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 540px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);">
           
           <!-- Top Accent Banner -->
           <tr>
-            <td style="height: 6px; background: linear-gradient(90deg, #0d9488 0%, #14b8a6 50%, #06b6d4 100%);"></td>
+            <td style="height: 6px; background: linear-gradient(90deg, #2851eb 0%, #6c84fc 50%, #8ea0ff 100%);"></td>
           </tr>
 
           <!-- Header -->
           <tr>
-            <td style="padding: 32px 36px 20px; border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 28px 36px 20px; border-bottom: 1px solid #f1f5f9;">
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                 <tr>
                   <td>
                     <div style="display: inline-block; vertical-align: middle;">
                       <table role="presentation" cellspacing="0" cellpadding="0">
                         <tr>
-                          <td style="background-color: #0f766e; color: #ffffff; width: 36px; height: 36px; border-radius: 8px; text-align: center; font-weight: 800; font-size: 20px; line-height: 36px;">
+                          <td style="background: linear-gradient(135deg, #2851eb 0%, #1e2042 100%); color: #ffffff; width: 38px; height: 38px; border-radius: 10px; text-align: center; font-weight: 800; font-size: 20px; line-height: 38px; box-shadow: 0 4px 10px rgba(40, 81, 235, 0.25);">
                             D
                           </td>
                           <td style="padding-left: 12px;">
@@ -49,37 +49,62 @@
 
           <!-- Body Content -->
           <tr>
-            <td style="padding: 36px 36px 24px;">
-              <div style="display: inline-block; background-color: #ccfbf1; color: #0f766e; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; border-radius: 12px; margin-bottom: 16px;">
+            <td style="padding: 36px 36px 28px; text-align: center;">
+              <div style="display: inline-block; background-color: #e8edfd; color: #2851eb; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 12px; border-radius: 12px; margin-bottom: 16px;">
                 Workspace Ready
               </div>
 
-              <h1 style="margin: 0 0 16px; font-size: 24px; font-weight: 700; color: #0f172a; line-height: 1.3; letter-spacing: -0.5px;">
-                Your workspace is ready to launch
+              <h1 style="margin: 0 0 12px; font-size: 24px; font-weight: 700; color: #0f172a; line-height: 1.3; letter-spacing: -0.5px;">
+                Your Workspace Activation Code
               </h1>
 
-              <p style="margin: 0 0 20px; font-size: 15px; line-height: 1.6; color: #475569;">
-                Welcome to Distrik! Your manufacturer workspace has been provisioned. Click the button below to sign in, complete your setup, and start automating your lead capture and sales operations.
+              <p style="margin: 0 0 24px; font-size: 15px; line-height: 1.6; color: #475569;">
+                Welcome to Distrik! Your manufacturer workspace has been provisioned. Enter the one-time code below on the sign-in page to launch your account:
+              </p>
+
+              <!-- Prominent 6-Digit OTP Box -->
+              <div style="background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%); border: 2px dashed #cbd5e1; border-radius: 14px; padding: 22px 16px; margin: 24px 0 20px; text-align: center;">
+                <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; color: #64748b; margin-bottom: 8px;">
+                  Your One-Time Code (OTP)
+                </div>
+                <div style="font-family: 'SF Mono', Consolas, Monaco, monospace, sans-serif; font-size: 36px; font-weight: 800; letter-spacing: 10px; color: #1e293b; padding-left: 10px;">
+                  {{ .Token }}
+                </div>
+                <div style="font-size: 12px; color: #64748b; margin-top: 8px;">
+                  Valid for 24 hours · Never share this code with anyone
+                </div>
+              </div>
+
+              <!-- Button Direct to Sign In -->
+              <div style="margin: 28px 0 20px;">
+                <a href="{{ .SiteURL }}/login"
+                   style="display: inline-block; background-color: #2851eb; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 36px; border-radius: 10px; box-shadow: 0 4px 12px rgba(40, 81, 235, 0.35); transition: all 0.2s;">
+                  Go to Sign In &rarr;
+                </a>
+              </div>
+
+              <p style="margin: 0; font-size: 13px; color: #64748b; line-height: 1.5;">
+                Open <a href="{{ .SiteURL }}/login" style="color: #2851eb; text-decoration: underline; font-weight: 500;">{{ .SiteURL }}/login</a>, select the <strong>Email</strong> tab, and enter your email along with this code.
               </p>
 
               <!-- Feature Highlights Box -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; margin: 24px 0; padding: 18px 20px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; margin: 28px 0 0; padding: 16px 20px; text-align: left;">
                 <tr>
                   <td>
                     <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                       <tr>
-                        <td style="padding: 6px 0; font-size: 14px; color: #334155;">
-                          <strong style="color: #0f766e;">✓</strong> Automated 24/7 WhatsApp lead capture & qualification
+                        <td style="padding: 5px 0; font-size: 13px; color: #334155;">
+                          <strong style="color: #2851eb;">✓</strong> Automated 24/7 WhatsApp lead capture & qualification
                         </td>
                       </tr>
                       <tr>
-                        <td style="padding: 6px 0; font-size: 14px; color: #334155;">
-                          <strong style="color: #0f766e;">✓</strong> AI-driven price negotiations within your margin rules
+                        <td style="padding: 5px 0; font-size: 13px; color: #334155;">
+                          <strong style="color: #2851eb;">✓</strong> Strict pricing guardrails enforced by database rules
                         </td>
                       </tr>
                       <tr>
-                        <td style="padding: 6px 0; font-size: 14px; color: #334155;">
-                          <strong style="color: #0f766e;">✓</strong> Instant PDF quotation generation & purchase order parsing
+                        <td style="padding: 5px 0; font-size: 13px; color: #334155;">
+                          <strong style="color: #2851eb;">✓</strong> Instant GST quotation generation & PO parsing
                         </td>
                       </tr>
                     </table>
@@ -87,36 +112,14 @@
                 </tr>
               </table>
 
-              <!-- Action Button -->
-              <div style="text-align: center; margin: 32px 0 24px;">
-                <!--[if mso]>
-                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=invite" style="height:48px;v-text-anchor:middle;width:240px;" arcsize="18%" stroke="f" fillcolor="#0f766e">
-                <w:anchorlock/>
-                <center style="color:#ffffff;font-family:sans-serif;font-size:15px;font-weight:bold;">Open My Workspace &rarr;</center>
-                </v:roundrect>
-                <![endif]-->
-                <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=invite"
-                   style="mso-hide:all; display: inline-block; background-color: #0f766e; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(15, 118, 110, 0.3); transition: all 0.2s;">
-                  Open My Workspace &rarr;
-                </a>
-              </div>
-
-              <!-- Expiry & Fallback Link Note -->
-              <p style="margin: 24px 0 8px; font-size: 12px; line-height: 1.5; color: #94a3b8; text-align: center;">
-                This secure one-time activation link is valid for 24 hours.
-              </p>
-              <div style="background-color: #f8fafc; border-radius: 8px; padding: 12px; margin-top: 16px; word-break: break-all; font-size: 11px; color: #64748b; line-height: 1.4;">
-                <span style="font-weight: 600; color: #475569;">Button not working?</span> Copy and paste this URL into your browser:<br>
-                <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=invite" style="color: #0f766e; text-decoration: underline;">{{ .RedirectTo }}?token_hash={{ .TokenHash }}&amp;type=invite</a>
-              </div>
             </td>
           </tr>
 
           <!-- Footer -->
           <tr>
-            <td style="padding: 24px 36px; background-color: #f8fafc; border-top: 1px solid #f1f5f9; text-align: center;">
-              <p style="margin: 0 0 6px; font-size: 12px; color: #64748b;">
-                Distrik &middot; AI Sales OS for Indian Manufacturers &middot; <a href="https://distrik.in" style="color: #0f766e; text-decoration: none;">distrik.in</a>
+            <td style="padding: 20px 36px; background-color: #f8fafc; border-top: 1px solid #f1f5f9; text-align: center;">
+              <p style="margin: 0 0 4px; font-size: 12px; color: #64748b;">
+                Distrik &middot; AI Sales OS for Indian Manufacturers &middot; <a href="{{ .SiteURL }}" style="color: #2851eb; text-decoration: none;">distrik.in</a>
               </p>
               <p style="margin: 0; font-size: 11px; color: #94a3b8;">
                 If you did not request this invitation, you can safely ignore this email.

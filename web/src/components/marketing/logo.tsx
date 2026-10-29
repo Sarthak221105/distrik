@@ -1,39 +1,56 @@
+import Image from "next/image";
 import Link from "next/link";
-import { useId } from "react";
 import { cn } from "@/lib/utils";
 
 export function LogoMark({ className }: { className?: string }) {
-  const id = useId();
   return (
-    <svg viewBox="0 0 512 512" aria-hidden className={cn("size-7 shrink-0", className)}>
-      <defs>
-        <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#2851eb" />
-          <stop offset="1" stopColor="#6c84fc" />
-        </linearGradient>
-      </defs>
-      <rect width="512" height="512" rx="112" fill={`url(#${id})`} />
-      <path
-        d="M160 128h96c88 0 144 52 144 128s-56 128-144 128h-96z"
-        fill="none"
-        stroke="#ffffff"
-        strokeWidth="48"
-        strokeLinejoin="round"
-      />
-      <circle cx="352" cy="384" r="24" fill="#373868" />
-    </svg>
+    <Image
+      src="/distrik-mark.png"
+      alt="Distrik mark"
+      width={40}
+      height={38}
+      className={cn("size-6 sm:size-7 shrink-0 object-contain", className)}
+      priority
+    />
   );
 }
 
-export function Logo({ className }: { className?: string }) {
+export function LogoImage({
+  className,
+  variant = "dark",
+}: {
+  className?: string;
+  variant?: "dark" | "white";
+}) {
+  return (
+    <Image
+      src={variant === "white" ? "/distrik-logo-white.png" : "/distrik-logo.png"}
+      alt="Distrik"
+      width={160}
+      height={54}
+      className={cn("h-8 sm:h-9 w-auto object-contain", className)}
+      priority
+    />
+  );
+}
+
+export function Logo({
+  className,
+  variant = "dark",
+}: {
+  className?: string;
+  variant?: "dark" | "white";
+}) {
   return (
     <Link
       href="/"
-      className={cn("inline-flex items-center gap-2 rounded-md font-display text-xl font-medium tracking-tight", className)}
+      className={cn(
+        "inline-flex items-center transition-opacity duration-200 hover:opacity-90 active:scale-95",
+        className,
+      )}
       aria-label="Distrik home"
     >
-      <LogoMark />
-      <span>Distrik</span>
+      <LogoImage variant={variant} />
     </Link>
   );
 }

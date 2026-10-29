@@ -44,6 +44,24 @@ export async function proxy(request: NextRequest) {
 
   const { data: userData } = await supabase.auth.getUser();
   const path = request.nextUrl.pathname;
+
+  // If someone lands on "/" with auth parameters (token_hash or code from an email),
+  // immediately forward them to the proper auth handler instead of rendering the landing page!
+  if (path === "/") {
+    const tokenHash = request.nextUrl.searchParams.get("token_hash") ?? request.nextUrl.searchParams.get("token");
+    if (tokenHash) {
+      const confirmUrl = request.nextUrl.clone();
+      confirmUrl.pathname = "/auth/confirm";
+      return NextResponse.redirect(confirmUrl);
+    }
+    const code = request.nextUrl.searchParams.get("code");
+    if (code) {
+      const callbackUrl = request.nextUrl.clone();
+      callbackUrl.pathname = "/auth/callback";
+      return NextResponse.redirect(callbackUrl);
+    }
+  }
+
   // "/" is the public landing page for signed out visitors.
   const isPublic = path === "/" || PUBLIC_PATHS.some((p) => path === p || path.startsWith(p + "/"));
 

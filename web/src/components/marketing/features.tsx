@@ -1,13 +1,9 @@
 import type { ReactNode } from "react";
-import { Check, FileText, Repeat, ScanSearch, ShieldCheck, Smartphone, UserCheck, MessageCircle, Hand } from "lucide-react";
+import { Check, Hand, MessageCircle, ScanSearch, ShieldCheck, UserCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   ApprovalCardMockup,
   DiscoveryMockup,
-  LeadReviewMockup,
-  QuotationMockup,
-  RepPhoneMockup,
-  ReorderMockup,
   WhatsAppChatMockup,
 } from "./mockups";
 import { Reveal } from "./reveal";
@@ -29,7 +25,7 @@ const blocks: Block[] = [
     icon: <ScanSearch aria-hidden />,
     kicker: "Discovery and scoring",
     title: "Say the market. Get buyers worth calling.",
-    body: "Type an instruction like “Find 75 FMCG distributors in Bhopal”. Distrik collects businesses from reviewed sources, removes duplicates, researches each one and scores how well it fits your product.",
+    body: 'Type an instruction like "Find 75 FMCG distributors in Bhopal". Distrik collects businesses from reviewed sources, removes duplicates, researches each one and scores how well it fits your product.',
     points: [
       "Plain-language objective, parsed into product, buyer type, city and target",
       "Automatic cleaning, de-duplication and classification",
@@ -38,23 +34,10 @@ const blocks: Block[] = [
     mockup: <DiscoveryMockup />,
   },
   {
-    id: "feature-review",
-    icon: <UserCheck aria-hidden />,
-    kicker: "Lead Review by your team",
-    title: "Nobody is contacted until your team says yes.",
-    body: "Every discovered business lands in Lead Review. Your owner or sales head approves, rejects, edits, merges duplicates and assigns reps. Outreach starts only for approved buyers.",
-    points: [
-      "Pending, Needs review, Approved and Rejected queues",
-      "Flags for possible duplicates, low confidence and missing phones",
-      "Bulk actions and a full review history",
-    ],
-    mockup: <LeadReviewMockup />,
-  },
-  {
     id: "feature-whatsapp",
     icon: <MessageCircle aria-hidden />,
     kicker: "WhatsApp AI agent",
-    title: "Sells in the buyer’s language, inside your price floors.",
+    title: "Sells in the buyer's language, inside your price floors.",
     body: "The AI answers product questions, shares your catalogue, qualifies interest and negotiates on WhatsApp in English, Hindi or Hinglish. Every price it quotes comes from your rules, checked in the database.",
     points: [
       "Facts come from your own products, specs and documents",
@@ -78,29 +61,6 @@ const blocks: Block[] = [
   },
 ];
 
-type Card = { icon: ReactNode; title: string; body: string; mockup: ReactNode };
-
-const cards: Card[] = [
-  {
-    icon: <FileText aria-hidden />,
-    title: "GST quotations and PO matching",
-    body: "Agreed deals become numbered GST quotation PDFs with HSN and tax lines, sent on WhatsApp. When the buyer’s purchase order arrives, Distrik reads it and matches it line by line. A person confirms every order.",
-    mockup: <QuotationMockup />,
-  },
-  {
-    icon: <Repeat aria-hidden />,
-    title: "Reorder predictions",
-    body: "From each account’s order history, Distrik predicts when the next order is due and flags accounts that are due or overdue, with a reminder ready to send to buyers who have opted in.",
-    mockup: <ReorderMockup />,
-  },
-  {
-    icon: <Smartphone aria-hidden />,
-    title: "A phone app for your reps",
-    body: "Reps see only their assigned leads, take over escalated chats, log calls and update stages. It installs from the browser and keeps working offline, syncing when the signal returns.",
-    mockup: <RepPhoneMockup />,
-  },
-];
-
 export function Features() {
   return (
     <section id="product" aria-labelledby="product-title" className="scroll-mt-20 py-20 lg:py-section">
@@ -109,7 +69,7 @@ export function Features() {
           <SectionHeading
             id="product-title"
             eyebrow="What Distrik does"
-            title="From “find me buyers” to a confirmed order"
+            title='From "find me buyers" to a confirmed order'
             description="Distrik does the repetitive sales work and brings back only the decisions that need a person: which leads to contact, which exceptions to allow and which orders to confirm."
           />
         </Reveal>
@@ -152,22 +112,24 @@ export function Features() {
           ))}
         </div>
 
-        <div className="mt-24 grid grid-cols-1 gap-6 sm:mt-32 md:grid-cols-3 xl:gap-8">
-          {cards.map((c, i) => (
-            <Reveal key={c.title} delay={i * 100} className="h-full min-w-0">
-              <article className="group flex h-full flex-col gap-5 rounded-2xl bg-surface shadow-sm p-6 transition-[box-shadow,border-color,translate] duration-300 hover:shadow-xl motion-safe:hover:-translate-y-1">
-                <span className="flex size-10 items-center justify-center rounded-xl bg-primary-soft text-primary [&_svg]:size-5">
+        {/* Additional capabilities - compact summary */}
+        <Reveal className="mt-24 sm:mt-32">
+          <div className="mx-auto grid max-w-4xl gap-px overflow-hidden rounded-2xl bg-border sm:grid-cols-3">
+            {[
+              { icon: <UserCheck className="size-5" aria-hidden />, title: "Lead review by your team", body: "Nobody is contacted until your team approves. Bulk actions, duplicate flags, and a full review history." },
+              { icon: <ShieldCheck className="size-5" aria-hidden />, title: "GST quotations & PO matching", body: "Agreed deals become numbered GST quotation PDFs. When the buyer's PO arrives, Distrik matches it line by line." },
+              { icon: <MessageCircle className="size-5" aria-hidden />, title: "Reorders & rep app", body: "Predicts when the next order is due. Your reps get a phone app that works offline and syncs when signal returns." },
+            ].map((c) => (
+              <div key={c.title} className="flex flex-col gap-3 bg-surface p-6 sm:p-8">
+                <span className="flex size-10 items-center justify-center rounded-xl bg-primary-soft text-primary">
                   {c.icon}
                 </span>
-                <div className="grid gap-2">
-                  <h3 className="text-h4 font-medium">{c.title}</h3>
-                  <p className="text-sm text-pretty text-muted-foreground">{c.body}</p>
-                </div>
-                <div className="mt-auto min-w-0 overflow-hidden rounded-xl bg-surface-muted p-3 sm:p-4">{c.mockup}</div>
-              </article>
-            </Reveal>
-          ))}
-        </div>
+                <h3 className="text-lg font-medium">{c.title}</h3>
+                <p className="text-sm text-pretty text-muted-foreground">{c.body}</p>
+              </div>
+            ))}
+          </div>
+        </Reveal>
 
         <p className="mt-10 flex items-center justify-center gap-2 text-center text-xs text-muted-foreground">
           <ShieldCheck className="size-4 text-primary" aria-hidden />

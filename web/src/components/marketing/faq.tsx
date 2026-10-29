@@ -26,17 +26,17 @@ export function FaqAccordion({ items, className }: { items: FaqItem[]; className
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => setOpen(isOpen ? null : i)}
-                className="group flex w-full items-center gap-4 rounded-2xl px-5 py-5 text-left text-base font-medium transition-colors hover:text-primary sm:px-6"
+                className="group flex w-full items-center gap-4 rounded-2xl px-6 py-6 text-left text-lg sm:text-xl font-bold transition-colors hover:text-accent sm:px-8"
               >
                 <span className="flex-1">{item.q}</span>
                 <span
                   className={cn(
-                    "flex size-8 shrink-0 items-center justify-center rounded-full border border-border transition-[transform,background-color,color] duration-300",
+                    "flex size-9 shrink-0 items-center justify-center rounded-full border border-border transition-[transform,background-color,color] duration-300",
                     isOpen ? "rotate-45 border-primary bg-primary text-primary-foreground" : "group-hover:bg-surface-muted",
                   )}
                   aria-hidden
                 >
-                  <Plus className="size-4" />
+                  <Plus className="size-4.5" />
                 </span>
               </button>
             </h3>
@@ -51,7 +51,7 @@ export function FaqAccordion({ items, className }: { items: FaqItem[]; className
               )}
             >
               <div className="overflow-hidden">
-                <div className="grid gap-3 px-5 pb-6 text-sm leading-relaxed text-muted-foreground sm:px-6 sm:text-base [&_a]:font-medium [&_a]:text-primary [&_a]:underline-offset-4 hover:[&_a]:underline">
+                <div className="grid gap-3.5 px-6 pb-7 text-base sm:text-lg leading-relaxed text-muted-foreground sm:px-8 [&_a]:font-medium [&_a]:text-accent [&_a]:underline-offset-4 hover:[&_a]:underline">
                   {item.a}
                 </div>
               </div>

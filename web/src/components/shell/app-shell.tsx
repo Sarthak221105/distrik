@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, type LucideIcon } from "lucide-react";
 import { useViewer } from "@/components/providers";
+import { LogoMark } from "@/components/marketing/logo";
 import { NotificationBell } from "@/components/shell/notification-bell";
 import { SignOutButton } from "@/components/shell/sign-out-button";
 import { Avatar } from "@/components/ui/misc";
@@ -60,10 +61,8 @@ export function AppShell({
   return (
     <div className="flex min-h-dvh">
       <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col border-r border-border bg-surface px-3 py-4 lg:flex">
-        <Link href={nav[0]?.href ?? "/"} className="mb-6 flex items-center gap-2 px-2">
-          <span className="inline-flex size-8 items-center justify-center rounded-lg bg-primary font-semibold text-primary-foreground">
-            D
-          </span>
+        <Link href={nav[0]?.href ?? "/"} className="mb-6 flex items-center gap-2.5 px-2">
+          <LogoMark className="size-8" />
           <span className="grid leading-tight">
             <span className="text-sm font-semibold">{title}</span>
             {subtitle && <span className="text-xs text-muted-foreground">{subtitle}</span>}

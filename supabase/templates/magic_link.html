@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Distrik Sign-in Code</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #1e293b;">
+  <!-- Preview Text -->
+  <div style="display: none; max-height: 0px; overflow: hidden;">
+    Your sign-in code for Distrik is {{ .Token }}.
+  </div>
+
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #0f172a; padding: 40px 16px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 520px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);">
+          
+          <!-- Top Accent Banner -->
+          <tr>
+            <td style="height: 6px; background: linear-gradient(90deg, #2851eb 0%, #6c84fc 100%);"></td>
+          </tr>
+
+          <!-- Header -->
+          <tr>
+            <td style="padding: 28px 36px 20px; border-bottom: 1px solid #f1f5f9;">
+              <div style="display: inline-block; vertical-align: middle;">
+                <table role="presentation" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td style="background: linear-gradient(135deg, #2851eb 0%, #1e2042 100%); color: #ffffff; width: 36px; height: 36px; border-radius: 8px; text-align: center; font-weight: 800; font-size: 18px; line-height: 36px;">
+                      D
+                    </td>
+                    <td style="padding-left: 12px;">
+                      <span style="font-size: 20px; font-weight: 700; color: #0f172a;">Distrik</span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Body Content -->
+          <tr>
+            <td style="padding: 36px 36px 28px; text-align: center;">
+              <h1 style="margin: 0 0 12px; font-size: 22px; font-weight: 700; color: #0f172a;">
+                Your Sign-in Code
+              </h1>
+
+              <p style="margin: 0 0 24px; font-size: 15px; line-height: 1.5; color: #475569;">
+                Enter this 6-digit code on the Distrik sign-in screen to access your account:
+              </p>
+
+              <!-- Prominent 6-Digit OTP Box -->
+              <div style="background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 20px 16px; margin: 20px 0; text-align: center;">
+                <div style="font-family: 'SF Mono', Consolas, Monaco, monospace, sans-serif; font-size: 36px; font-weight: 800; letter-spacing: 10px; color: #1e293b; padding-left: 10px;">
+                  {{ .Token }}
+                </div>
+                <div style="font-size: 12px; color: #64748b; margin-top: 8px;">
+                  Valid for 10 minutes · Do not share this code
+                </div>
+              </div>
+
+              <p style="margin: 20px 0 0; font-size: 12px; color: #94a3b8;">
+                If you did not request this code, you can safely ignore this email.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 18px 36px; background-color: #f8fafc; border-top: 1px solid #f1f5f9; text-align: center;">
+              <p style="margin: 0; font-size: 11px; color: #94a3b8;">
+                Distrik &middot; AI Sales OS for Indian Manufacturers &middot; distrik.in
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

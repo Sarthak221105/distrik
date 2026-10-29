@@ -1,8 +1,9 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
+import { getSupabaseBrowser } from "@/lib/supabase/client";
 import type { Viewer } from "@/lib/viewer";
 
 const ViewerContext = createContext<Viewer | null>(null);
@@ -31,6 +32,21 @@ export function Providers({ children }: { children: ReactNode }) {
         },
       }),
   );
+
+  useEffect(() => {
+    // If the browser lands on "/" or "/login" with an access_token in the URL hash (from Supabase auth redirect),
+    // listen for the session and route straight to /dashboard!
+    if (typeof window !== "undefined" && window.location.hash.includes("access_token")) {
+      const supabase = getSupabaseBrowser();
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+        if (session && (window.location.pathname === "/" || window.location.pathname === "/login")) {
+          window.location.href = "/dashboard";
+        }
+      });
+      return () => subscription.unsubscribe();
+    }
+  }, []);
+
   return (
     <QueryClientProvider client={client}>
       {children}

@@ -103,20 +103,20 @@ export function PlanPrice({ plan, cycle, size = "lg" }: { plan: PublicPlan; cycl
   const perMonth = monthlyEquivalent(plan, cycle);
   const showStrike = cycle === "yearly" && plan.monthly_price_paise > perMonth;
   return (
-    <div className="grid gap-1">
+    <div className="grid gap-1.5">
       <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
         {showStrike && (
-          <span className={cn("text-muted-foreground line-through tabular", size === "lg" ? "text-lg" : "text-sm")}>
+          <span className={cn("text-muted-foreground line-through tabular", size === "lg" ? "text-xl" : "text-base")}>
             <span className="sr-only">Was </span>
             {formatINR(plan.monthly_price_paise, { whole: true })}
           </span>
         )}
-        <span className={cn("font-display font-medium tabular", size === "lg" ? "text-h2" : "text-h3")}>
+        <span className={cn("font-display font-bold tabular text-foreground", size === "lg" ? "text-4xl sm:text-5xl" : "text-2xl sm:text-3xl")}>
           {formatINR(perMonth, { whole: true })}
         </span>
-        <span className="text-sm text-muted-foreground">/ month + GST</span>
+        <span className="text-base font-medium text-muted-foreground">/ month + GST</span>
       </p>
-      <p className="text-xs text-muted-foreground tabular">
+      <p className="text-xs sm:text-sm text-muted-foreground tabular">
         {cycle === "yearly" ? `Billed ${formatINR(amountFor(plan, "yearly"), { whole: true })} yearly + GST` : "Billed monthly · cancel any time"}
       </p>
     </div>
@@ -146,28 +146,36 @@ export function PlanCard({
     <article
       aria-labelledby={titleId}
       className={cn(
-        "relative flex h-full flex-col gap-6 rounded-2xl border bg-surface p-6 transition-[box-shadow,translate] duration-300 motion-safe:hover:-translate-y-1 hover:shadow-xl",
-        featured ? "border-primary shadow-xl ring-1 ring-primary" : "border-transparent shadow-sm",
+        "card-hover-effect relative flex h-full flex-col gap-7 rounded-3xl border bg-surface p-8 sm:p-9 shadow-xs",
+        featured ? "border-primary shadow-lg ring-1 ring-primary" : "border-border/80",
         selected && "ring-2 ring-primary",
         className,
       )}
     >
       {featured && (
-        <span className="absolute -top-3 left-6 inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground shadow-sm">
-          <Sparkles className="size-3" aria-hidden /> Most popular
+        <span className="absolute -top-3.5 left-7 inline-flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-1 text-xs sm:text-sm font-semibold text-primary-foreground shadow-sm">
+          <Sparkles className="size-3.5" aria-hidden /> Most popular
         </span>
       )}
-      <div className="grid gap-1.5">
-        <h3 id={titleId} className="text-h4 font-medium">
+      <div className="grid gap-2">
+        <h3 id={titleId} className="text-2xl sm:text-3xl font-bold text-foreground">
           {plan.name}
         </h3>
-        {plan.tagline && <p className="text-sm text-muted-foreground">{plan.tagline}</p>}
+        {plan.tagline && <p className="text-base sm:text-lg text-muted-foreground">{plan.tagline}</p>}
       </div>
 
       <PlanPrice plan={plan} cycle={cycle} />
 
       {link && (
-        <Button asChild size="lg" variant={featured ? "default" : "outline"} className="w-full">
+        <Button
+          asChild
+          size="lg"
+          variant={featured ? "default" : "outline"}
+          className={cn(
+            "w-full rounded-full h-14 text-base sm:text-lg font-semibold shadow-xs transition-all duration-300 hover:scale-105 active:scale-95",
+            featured && "btn-sheen bg-primary hover:bg-black shadow-md hover:shadow-lg",
+          )}
+        >
           <Link href={link}>
             {ctaLabel ?? `Choose ${plan.name}`}
             <span className="sr-only"> ({cycle === "yearly" ? "billed yearly" : "billed monthly"})</span>
@@ -175,20 +183,20 @@ export function PlanCard({
         </Button>
       )}
 
-      <div className="grid gap-4 border-t border-border pt-5">
-        <ul className="grid gap-2" aria-label={`${plan.name} limits`}>
+      <div className="grid gap-5 border-t border-border pt-6">
+        <ul className="grid gap-2.5" aria-label={`${plan.name} limits`}>
           {planLimitLines(plan).map((l) => (
-            <li key={l.label} className="flex items-center gap-2 text-sm font-medium [&_svg]:size-4 [&_svg]:text-primary">
+            <li key={l.label} className="flex items-center gap-2.5 text-base sm:text-lg font-semibold text-foreground [&_svg]:size-5 [&_svg]:text-primary">
               {l.icon}
               {l.label}
             </li>
           ))}
         </ul>
         {plan.features.length > 0 && (
-          <ul className="grid gap-2" aria-label={`${plan.name} features`}>
+          <ul className="grid gap-2.5" aria-label={`${plan.name} features`}>
             {plan.features.map((f) => (
-              <li key={f} className="flex items-start gap-2 text-sm text-muted-foreground">
-                <Check className="mt-0.5 size-4 shrink-0 text-success" aria-hidden />
+              <li key={f} className="flex items-start gap-2.5 text-sm sm:text-base text-muted-foreground">
+                <Check className="mt-1 size-4.5 shrink-0 text-success" aria-hidden />
                 <span>{f}</span>
               </li>
             ))}
