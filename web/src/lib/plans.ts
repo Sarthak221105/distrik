@@ -74,7 +74,7 @@ export const DEFAULT_PLANS: PublicPlan[] = [
 ];
 
 export const DEFAULT_PUBLIC_STATS: PublicStats = {
-  waitlist_count: 142,
+  waitlist_count: 0,
   plans: DEFAULT_PLANS,
 };
 
@@ -114,9 +114,10 @@ export const publicApi = {
       const res = await getSupabaseBrowser().rpc("public_stats");
       if (res.data && typeof res.data === "object") {
         const stats = res.data as Partial<PublicStats>;
-        if (Array.isArray(stats.plans) && stats.plans.length > 0) {
-          return res.data as PublicStats;
-        }
+        return {
+          waitlist_count: typeof stats.waitlist_count === "number" ? stats.waitlist_count : 0,
+          plans: Array.isArray(stats.plans) && stats.plans.length > 0 ? stats.plans : DEFAULT_PLANS,
+        };
       }
       return DEFAULT_PUBLIC_STATS;
     } catch {
