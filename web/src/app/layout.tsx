@@ -17,7 +17,13 @@ export const metadata: Metadata = {
   description: "AI-powered market expansion and sales agent for FMCG manufacturers.",
   manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, title: "Distrik", statusBarStyle: "default" },
-  icons: { icon: "/icons/icon.svg", apple: "/icons/icon.svg" },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icons/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/icons/apple-touch-icon.png",
+  },
 };
 
 export const viewport: Viewport = {

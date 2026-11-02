@@ -11,6 +11,7 @@ import {
   limitLabel,
   monthlyEquivalent,
   yearlySavingPct,
+  DEFAULT_PLANS,
   type BillingCycle,
   type PublicPlan,
 } from "@/lib/plans";
@@ -106,17 +107,17 @@ export function PlanPrice({ plan, cycle, size = "lg" }: { plan: PublicPlan; cycl
     <div className="grid gap-1.5">
       <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
         {showStrike && (
-          <span className={cn("text-muted-foreground line-through tabular", size === "lg" ? "text-xl" : "text-base")}>
+          <span className={cn("text-muted-foreground line-through tabular", size === "lg" ? "text-base" : "text-sm")}>
             <span className="sr-only">Was </span>
             {formatINR(plan.monthly_price_paise, { whole: true })}
           </span>
         )}
-        <span className={cn("font-display font-bold tabular text-foreground", size === "lg" ? "text-4xl sm:text-5xl" : "text-2xl sm:text-3xl")}>
+        <span className={cn("font-display font-bold tabular text-foreground", size === "lg" ? "text-3xl sm:text-4xl" : "text-xl sm:text-2xl")}>
           {formatINR(perMonth, { whole: true })}
         </span>
-        <span className="text-base font-medium text-muted-foreground">/ month + GST</span>
+        <span className="text-xs sm:text-sm font-medium text-muted-foreground">/ month + GST</span>
       </p>
-      <p className="text-xs sm:text-sm text-muted-foreground tabular">
+      <p className="text-[11px] sm:text-xs text-muted-foreground tabular">
         {cycle === "yearly" ? `Billed ${formatINR(amountFor(plan, "yearly"), { whole: true })} yearly + GST` : "Billed monthly · cancel any time"}
       </p>
     </div>
@@ -146,7 +147,7 @@ export function PlanCard({
     <article
       aria-labelledby={titleId}
       className={cn(
-        "card-hover-effect relative flex h-full flex-col gap-7 rounded-3xl border bg-surface p-8 sm:p-9 shadow-xs",
+        "card-hover-effect relative flex h-full flex-col gap-5 rounded-2xl border bg-surface p-6 sm:p-7 shadow-xs",
         featured ? "border-primary shadow-lg ring-1 ring-primary" : "border-border/80",
         selected && "ring-2 ring-primary",
         className,
@@ -158,10 +159,10 @@ export function PlanCard({
         </span>
       )}
       <div className="grid gap-2">
-        <h3 id={titleId} className="text-2xl sm:text-3xl font-bold text-foreground">
+        <h3 id={titleId} className="text-xl sm:text-2xl font-bold text-foreground">
           {plan.name}
         </h3>
-        {plan.tagline && <p className="text-base sm:text-lg text-muted-foreground">{plan.tagline}</p>}
+        {plan.tagline && <p className="text-xs sm:text-sm text-muted-foreground">{plan.tagline}</p>}
       </div>
 
       <PlanPrice plan={plan} cycle={cycle} />
@@ -172,7 +173,7 @@ export function PlanCard({
           size="lg"
           variant={featured ? "default" : "outline"}
           className={cn(
-            "w-full rounded-full h-14 text-base sm:text-lg font-semibold shadow-xs transition-all duration-300 hover:scale-105 active:scale-95",
+            "w-full rounded-full h-11 sm:h-12 text-sm sm:text-base font-semibold shadow-xs transition-all duration-300 hover:scale-105 active:scale-95",
             featured && "btn-sheen bg-primary hover:bg-black shadow-md hover:shadow-lg",
           )}
         >
@@ -183,10 +184,10 @@ export function PlanCard({
         </Button>
       )}
 
-      <div className="grid gap-5 border-t border-border pt-6">
+      <div className="grid gap-4 border-t border-border pt-4.5">
         <ul className="grid gap-2.5" aria-label={`${plan.name} limits`}>
           {planLimitLines(plan).map((l) => (
-            <li key={l.label} className="flex items-center gap-2.5 text-base sm:text-lg font-semibold text-foreground [&_svg]:size-5 [&_svg]:text-primary">
+            <li key={l.label} className="flex items-center gap-2.5 text-xs sm:text-sm font-semibold text-foreground [&_svg]:size-4 [&_svg]:text-primary">
               {l.icon}
               {l.label}
             </li>
@@ -195,8 +196,8 @@ export function PlanCard({
         {plan.features.length > 0 && (
           <ul className="grid gap-2.5" aria-label={`${plan.name} features`}>
             {plan.features.map((f) => (
-              <li key={f} className="flex items-start gap-2.5 text-sm sm:text-base text-muted-foreground">
-                <Check className="mt-1 size-4.5 shrink-0 text-success" aria-hidden />
+              <li key={f} className="flex items-start gap-2.5 text-xs sm:text-sm text-muted-foreground">
+                <Check className="mt-0.5 size-3.5 shrink-0 text-success" aria-hidden />
                 <span>{f}</span>
               </li>
             ))}
@@ -271,7 +272,7 @@ export function PricingPlans({
 }) {
   const [cycle, setCycle] = useState<BillingCycle>(initialCycle);
   const { data, isPending, isError, error, refetch } = usePublicStats();
-  const plans = data?.plans ?? [];
+  const plans = data?.plans && data.plans.length > 0 ? data.plans : DEFAULT_PLANS;
   const saving = yearlySavingPct(plans);
 
   return (
@@ -280,7 +281,7 @@ export function PricingPlans({
         <BillingCycleToggle value={cycle} onChange={setCycle} savingPct={saving} />
       </div>
 
-      {isPending ? (
+      {isPending && !data ? (
         <div className="mx-auto grid max-w-xl gap-6 lg:max-w-[1280px] lg:grid-cols-3" aria-busy="true">
           <span className="sr-only" role="status">
             Loading plans
@@ -289,25 +290,7 @@ export function PricingPlans({
           <PlanCardSkeleton />
           <PlanCardSkeleton />
         </div>
-      ) : isError ? (
-        <ErrorState
-          title="Could not load plans"
-          error={error}
-          onRetry={() => void refetch()}
-          className="mx-auto w-full max-w-xl"
-        />
-      ) : plans.length === 0 ? (
-        <EmptyState
-          title="Plans are being finalised"
-          description="Join the waitlist and we will email you as soon as plans open."
-          action={
-            <Button asChild>
-              <Link href="/#waitlist">Join the waitlist</Link>
-            </Button>
-          }
-          className="mx-auto w-full max-w-xl bg-surface"
-        />
-      ) : (
+      ) : plans.length > 0 ? (
         <div
           className={cn(
             "mx-auto grid w-full items-stretch gap-6 pt-3",
@@ -318,6 +301,24 @@ export function PricingPlans({
             <PlanCard key={p.code} plan={p} cycle={cycle} />
           ))}
         </div>
+      ) : isError ? (
+        <ErrorState
+          title="Could not load plans"
+          error={error}
+          onRetry={() => void refetch()}
+          className="mx-auto w-full max-w-xl"
+        />
+      ) : (
+        <EmptyState
+          title="Plans are being finalised"
+          description="Join the waitlist and we will email you as soon as plans open."
+          action={
+            <Button asChild>
+              <Link href="/#waitlist">Join the waitlist</Link>
+            </Button>
+          }
+          className="mx-auto w-full max-w-xl bg-surface"
+        />
       )}
 
       {showFootnote && (

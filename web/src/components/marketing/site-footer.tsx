@@ -10,7 +10,7 @@ const footLink = "rounded-sm text-sm text-muted-foreground transition-colors hov
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-surface">
-      <div className={cn(CONTAINER, "grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]")}>
+      <div className={cn(CONTAINER, "grid gap-7 py-10 md:py-12 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]")}>
         <div className="grid content-start gap-4">
           <Logo className="w-fit" />
           <p className="max-w-xs text-sm text-muted-foreground">

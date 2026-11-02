@@ -8,7 +8,7 @@ export type PolicySection = { id: string; title: string; content: ReactNode };
 
 /** Long-form typography for policy text (no typography plugin in this app). */
 export const proseClass = [
-  "text-[15px] leading-7 text-foreground/90 sm:text-base sm:leading-8",
+  "text-sm leading-6 text-foreground/90 sm:text-[15px] sm:leading-7",
   "[&_p]:mt-4 [&_p:first-child]:mt-0",
   "[&_ul]:mt-4 [&_ul]:grid [&_ul]:list-disc [&_ul]:gap-2 [&_ul]:pl-6 [&_ul_li]:pl-1 [&_ul_li::marker]:text-primary",
   "[&_ol]:mt-4 [&_ol]:grid [&_ol]:list-decimal [&_ol]:gap-2 [&_ol]:pl-6",
@@ -57,7 +57,7 @@ export function PolicyDocument({
   return (
     <article aria-labelledby="policy-title">
       <header className="border-b border-border bg-surface">
-        <Container className="grid gap-5 py-12 sm:py-16">
+        <Container className="grid gap-5 py-9 sm:py-12">
           <nav aria-label="Breadcrumb">
             <ol className="flex flex-wrap items-center gap-1 text-sm text-muted-foreground">
               <li>
@@ -89,7 +89,7 @@ export function PolicyDocument({
         </Container>
       </header>
 
-      <Container className="grid gap-10 py-12 sm:py-16 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-16">
+      <Container className="grid gap-10 py-9 sm:py-12 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-16">
         <aside className="lg:sticky lg:top-24 lg:self-start">
           <nav aria-labelledby="toc-title" className="rounded-2xl bg-surface shadow-sm p-5 lg:border-0 lg:bg-transparent lg:p-0">
             <h2 id="toc-title" className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">

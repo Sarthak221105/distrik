@@ -7,9 +7,9 @@ export function LogoMark({ className }: { className?: string }) {
     <Image
       src="/distrik-mark.png"
       alt="Distrik mark"
-      width={40}
-      height={38}
-      className={cn("size-6 sm:size-7 shrink-0 object-contain", className)}
+      width={30}
+      height={28}
+      className={cn("size-5 sm:size-5.5 shrink-0 object-contain", className)}
       priority
     />
   );
@@ -26,9 +26,9 @@ export function LogoImage({
     <Image
       src={variant === "white" ? "/distrik-logo-white.png" : "/distrik-logo.png"}
       alt="Distrik"
-      width={160}
-      height={54}
-      className={cn("h-8 sm:h-9 w-auto object-contain", className)}
+      width={120}
+      height={40}
+      className={cn("h-6 sm:h-7 w-auto object-contain", className)}
       priority
     />
   );

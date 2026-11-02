@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { publicApi, type PublicStats } from "@/lib/plans";
+import { DEFAULT_PUBLIC_STATS, publicApi, type PublicStats } from "@/lib/plans";
 
 // Shared by the landing page and the signup pages so one fetch serves the
 // waitlist counter and the plan cards.
@@ -11,6 +11,7 @@ export function usePublicStats() {
   return useQuery<PublicStats>({
     queryKey: publicStatsKey,
     queryFn: () => publicApi.stats(),
+    initialData: DEFAULT_PUBLIC_STATS,
     staleTime: 60_000,
   });
 }

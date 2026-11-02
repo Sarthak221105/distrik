@@ -120,7 +120,7 @@ export default function LandingPage() {
       <AiCallingSection />
 
       {/* Pricing Section */}
-      <section id="pricing" aria-labelledby="pricing-title" className="scroll-mt-20 py-20 lg:py-24">
+      <section id="pricing" aria-labelledby="pricing-title" className="scroll-mt-20 py-14 lg:py-18">
         <Container>
           <Reveal>
             <SectionHeading
@@ -130,13 +130,13 @@ export default function LandingPage() {
               description="Simple pricing per company plus GST. Select a plan based on your team size and how many expansion markets you want to run simultaneously."
             />
           </Reveal>
-          <PricingPlans className="mt-12" />
+          <PricingPlans className="mt-9" />
         </Container>
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" aria-labelledby="faq-title" className="scroll-mt-20 bg-surface/50 py-20 lg:py-24">
-        <Container className="grid gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
+      <section id="faq" aria-labelledby="faq-title" className="scroll-mt-20 bg-surface/50 py-14 lg:py-18">
+        <Container className="grid gap-8 lg:grid-cols-[1fr_1.6fr] lg:gap-12">
           <Reveal>
             <SectionHeading
               id="faq-title"
@@ -164,8 +164,8 @@ export default function LandingPage() {
       </section>
 
       {/* Waitlist Section */}
-      <section id="waitlist" aria-labelledby="waitlist-title" className="scroll-mt-20 py-20 lg:py-24">
-        <Container className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <section id="waitlist" aria-labelledby="waitlist-title" className="scroll-mt-20 py-14 lg:py-18">
+        <Container className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
           <Reveal>
             <SectionHeading
               id="waitlist-title"

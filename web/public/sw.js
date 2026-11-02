@@ -15,7 +15,7 @@
  *  - Web push: shows the notification and opens its deep link on tap.
  */
 
-const VERSION = "v1";
+const VERSION = "v2";
 const SHELL_CACHE = `distrik-shell-${VERSION}`;
 const STATIC_CACHE = `distrik-static-${VERSION}`;
 const PAGES_CACHE = `distrik-pages-${VERSION}`;

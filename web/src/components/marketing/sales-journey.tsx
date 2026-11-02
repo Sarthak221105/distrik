@@ -42,61 +42,61 @@ const steps = [
 
 export function SalesJourney() {
   return (
-    <section id="how-it-works" aria-labelledby="journey-title" className="scroll-mt-20 py-20 sm:py-28 lg:py-36">
+    <section id="how-it-works" aria-labelledby="journey-title" className="scroll-mt-20 py-14 sm:py-20 lg:py-26">
       <Container>
         <Reveal>
-          <div className="mx-auto max-w-6xl 2xl:max-w-7xl text-center">
-            <span className="inline-flex items-center gap-2.5 rounded-full border border-border bg-surface px-5 py-2 text-xs sm:text-base font-semibold text-foreground shadow-2xs transition-all duration-300 hover:border-accent/40">
-              <span className="size-2.5 rounded-full bg-accent animate-pulse-dot" />
+          <div className="mx-auto max-w-4xl lg:max-w-5xl text-center">
+            <span className="inline-flex items-center gap-2.5 rounded-full border border-border bg-surface px-3.5 py-1.5 text-xs sm:text-sm font-semibold text-foreground shadow-2xs transition-all duration-300 hover:border-accent/40">
+              <span className="size-2 rounded-full bg-accent animate-pulse-dot" />
               End-to-End Sales Journey
             </span>
-            <h2 id="journey-title" className="mt-6 text-[38px] sm:text-[58px] md:text-[72px] lg:text-[84px] xl:text-[94px] font-bold tracking-tight text-foreground leading-[1.03] text-balance">
+            <h2 id="journey-title" className="mt-4.5 text-[28px] sm:text-[42px] md:text-[52px] lg:text-[62px] xl:text-[70px] font-bold tracking-tight text-foreground leading-[1.08] text-balance">
               How Distrik turns city expansion into{" "}
               <span className="font-editorial-serif italic font-normal text-accent block sm:inline">
                 predictable repeat orders.
               </span>
             </h2>
-            <p className="mt-8 text-xl text-muted-foreground sm:text-2xl lg:text-[28px] leading-relaxed text-pretty max-w-5xl mx-auto">
+            <p className="mt-6 text-base text-muted-foreground sm:text-lg lg:text-[21px] leading-relaxed text-pretty max-w-4xl mx-auto">
               A seamless five-step journey from dealer discovery to confirmed purchase orders, with full human oversight.
             </p>
           </div>
         </Reveal>
 
         {/* 5-Step Flow */}
-        <div className="relative mt-16 sm:mt-24">
+        <div className="relative mt-12 sm:mt-18">
           {/* Animated glowing track on large screens */}
           <div
             aria-hidden
             className="absolute top-1/2 left-[5%] right-[5%] -translate-y-8 hidden h-0.5 overflow-hidden bg-accent/20 xl:block"
           >
-            <div className="h-full w-56 bg-gradient-to-r from-transparent via-accent to-transparent animate-[glow-line_3.5s_linear_infinite]" />
+            <div className="h-full w-44 bg-gradient-to-r from-transparent via-accent to-transparent animate-[glow-line_3.5s_linear_infinite]" />
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="grid gap-4.5 sm:grid-cols-2 lg:grid-cols-5">
             {steps.map((item, idx) => (
               <Reveal key={item.name} delay={idx * 70} className="h-full">
-                <div className="card-hover-effect group relative flex h-full flex-col justify-between rounded-3xl border border-border/80 bg-surface p-7 sm:p-8 shadow-xs hover:border-accent/50 hover:shadow-xl transition-all duration-300">
+                <div className="card-hover-effect group relative flex h-full flex-col justify-between rounded-2xl border border-border/80 bg-surface p-5 sm:p-6 shadow-xs hover:border-accent/50 hover:shadow-xl transition-all duration-300">
                   <div>
                     {/* Step badge & icon */}
                     <div className="flex items-center justify-between">
-                      <span className="flex size-14 items-center justify-center rounded-2xl bg-surface-muted text-base font-bold text-foreground tabular-nums transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:scale-105 shadow-2xs">
+                      <span className="flex size-11 items-center justify-center rounded-xl bg-surface-muted text-sm font-bold text-foreground tabular-nums transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:scale-105 shadow-2xs">
                         {item.step}
                       </span>
-                      <item.icon className="size-6 text-muted-foreground transition-all duration-300 group-hover:text-accent group-hover:scale-115" aria-hidden />
+                      <item.icon className="size-5 text-muted-foreground transition-all duration-300 group-hover:text-accent group-hover:scale-115" aria-hidden />
                     </div>
 
                     {/* Step title */}
-                    <div className="mt-8">
-                      <h3 className="text-2xl font-bold text-foreground tracking-tight">
+                    <div className="mt-6">
+                      <h3 className="text-lg sm:text-xl font-bold text-foreground tracking-tight">
                         {item.name}
                       </h3>
-                      <p className="mt-1.5 text-xs sm:text-sm font-bold text-accent tracking-wide uppercase">
+                      <p className="mt-1.5 text-[11px] sm:text-xs font-bold text-accent tracking-wide uppercase">
                         {item.headline}
                       </p>
                     </div>
 
                     {/* Step description */}
-                    <p className="mt-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
+                    <p className="mt-3 text-xs sm:text-sm leading-relaxed text-muted-foreground">
                       {item.description}
                     </p>
                   </div>

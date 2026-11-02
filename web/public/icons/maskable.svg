@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Distrik">
-  <rect width="512" height="512" fill="#0f766e"/>
-  <g transform="translate(256 256) scale(0.7) translate(-256 -256)">
-    <path d="M160 128h96c88 0 144 52 144 128s-56 128-144 128h-96z" fill="none" stroke="#ffffff" stroke-width="48" stroke-linejoin="round"/>
-    <circle cx="352" cy="384" r="24" fill="#f59e0b"/>
+  <rect width="512" height="512" rx="112" fill="#0F172A"/>
+  <g transform="translate(64, 64) scale(0.75)">
+    <path fill-rule="evenodd" fill="#FFFFFF" d="M 41,170 L 39,172 L 39,433 L 41,435 L 172,435 L 173,433 L 190,432 L 198,428 L 203,428 L 207,425 L 214,424 L 225,419 L 226,417 L 231,416 L 251,402 L 264,389 L 281,364 L 290,340 L 290,332 L 293,324 L 293,280 L 290,272 L 290,265 L 281,240 L 279,239 L 272,225 L 260,211 L 234,190 L 229,189 L 218,182 L 181,171 Z M 104,224 L 167,224 L 169,226 L 180,227 L 201,238 L 212,248 L 222,261 L 221,263 L 224,265 L 229,285 L 231,287 L 231,318 L 229,320 L 228,331 L 226,332 L 225,338 L 217,352 L 196,371 L 177,379 L 162,380 L 160,382 L 105,382 L 103,380 Z"/>
+    <path fill="#FC4106" d="M 308,81 L 308,89 L 346,127 L 414,127 L 417,130 L 417,195 L 457,233 L 465,234 L 470,230 L 471,82 L 468,78 L 464,76 L 314,76 Z"/>
   </g>
 </svg>

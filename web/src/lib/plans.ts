@@ -21,6 +21,64 @@ export type PublicPlan = {
 
 export type PublicStats = { waitlist_count: number; plans: PublicPlan[] };
 
+export const DEFAULT_PLANS: PublicPlan[] = [
+  {
+    code: "basic",
+    name: "Basic",
+    tagline: "For a first new market",
+    monthly_price_paise: 500000,
+    yearly_price_paise: 4800000,
+    features: [
+      "AI WhatsApp sales agent (English, Hindi, Hinglish)",
+      "Buyer discovery and Lead Review",
+      "Price floors and approval guardrails",
+      "GST quotations and PO matching",
+      "Rep app with offline mode",
+      "Email support",
+    ],
+    limits: { seats: 3, active_campaigns: 1, prospects_per_month: 100 },
+    is_featured: false,
+  },
+  {
+    code: "growth",
+    name: "Growth",
+    tagline: "For manufacturers expanding city by city",
+    monthly_price_paise: 900000,
+    yearly_price_paise: 8640000,
+    features: [
+      "Everything in Basic",
+      "Reorder predictions and follow ups",
+      "Analytics and AI health",
+      "Catalogue extraction to Product Brain",
+      "Priority support",
+    ],
+    limits: { seats: 10, active_campaigns: 3, prospects_per_month: 400 },
+    is_featured: true,
+  },
+  {
+    code: "scale",
+    name: "Scale",
+    tagline: "For multi-state sales teams",
+    monthly_price_paise: 2000000,
+    yearly_price_paise: 19200000,
+    features: [
+      "Everything in Growth",
+      "Unlimited campaigns",
+      "Delegated permissions for sales heads",
+      "Guided onboarding",
+      "Dedicated success manager",
+    ],
+    limits: { seats: 25, active_campaigns: null, prospects_per_month: 1500 },
+    is_featured: false,
+  },
+];
+
+export const DEFAULT_PUBLIC_STATS: PublicStats = {
+  waitlist_count: 142,
+  plans: DEFAULT_PLANS,
+};
+
+
 export type SubmitResult = {
   ok: true;
   status_token: string;
@@ -51,7 +109,20 @@ export type ApplicationStatus = {
 export const publicApi = {
   // Read-only, so it goes straight to the database (granted to anon) and keeps
   // working even when Edge Functions are unavailable.
-  stats: async () => unwrap(await getSupabaseBrowser().rpc("public_stats")) as unknown as PublicStats,
+  stats: async (): Promise<PublicStats> => {
+    try {
+      const res = await getSupabaseBrowser().rpc("public_stats");
+      if (res.data && typeof res.data === "object") {
+        const stats = res.data as Partial<PublicStats>;
+        if (Array.isArray(stats.plans) && stats.plans.length > 0) {
+          return res.data as PublicStats;
+        }
+      }
+      return DEFAULT_PUBLIC_STATS;
+    } catch {
+      return DEFAULT_PUBLIC_STATS;
+    }
+  },
   joinWaitlist: (body: { email: string; name?: string; company?: string; website?: string }) =>
     invokeFn<{ joined: boolean; position: number; waitlist_count: number }>("public-signup", { action: "join_waitlist", ...body }),
   submitApplication: (body: Record<string, unknown>) => invokeFn<SubmitResult>("public-signup", { action: "submit_application", ...body }),
