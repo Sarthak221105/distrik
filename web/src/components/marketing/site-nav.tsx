@@ -21,42 +21,21 @@ const navLink =
 
 export function SiteNav() {
   const [open, setOpen] = useState(false);
-  const [isScrolledPastHero, setIsScrolledPastHero] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const updateScrollState = () => {
-      const heroEl = document.getElementById("hero");
-      if (heroEl) {
-        const rect = heroEl.getBoundingClientRect();
-        // The navbar is sticky at the top (~60px tall with padding).
-        // Transition to translucent glassmorphism as soon as the user scrolls away from the Hero section.
-        setIsScrolledPastHero(rect.bottom <= 80);
-      } else {
-        // Fallback for pages without a Hero section (e.g. policy pages)
-        setIsScrolledPastHero(window.scrollY > 80);
-      }
+      // Transition as soon as the user scrolls away from the top (> 15px)
+      setIsScrolled(window.scrollY > 15);
     };
 
     updateScrollState();
     window.addEventListener("scroll", updateScrollState, { passive: true });
     window.addEventListener("resize", updateScrollState, { passive: true });
 
-    let observer: IntersectionObserver | null = null;
-    const heroEl = document.getElementById("hero");
-    if (heroEl && typeof IntersectionObserver !== "undefined") {
-      observer = new IntersectionObserver(
-        ([entry]) => {
-          setIsScrolledPastHero(!entry.isIntersecting && entry.boundingClientRect.top < 0);
-        },
-        { rootMargin: "-80px 0px 0px 0px", threshold: 0 },
-      );
-      observer.observe(heroEl);
-    }
-
     return () => {
       window.removeEventListener("scroll", updateScrollState);
       window.removeEventListener("resize", updateScrollState);
-      if (observer) observer.disconnect();
     };
   }, []);
 
@@ -84,9 +63,9 @@ export function SiteNav() {
         aria-label="Main"
         className={cn(
           "w-full flex h-[54px] sm:h-[60px] items-center gap-3.5 sm:gap-4 rounded-full border px-4 sm:px-6 transition-all duration-300 ease-out",
-          open || isScrolledPastHero
-            ? "border-border bg-surface/95 shadow-md backdrop-blur-md"
-            : "border-border/80 bg-surface/95 shadow-2xs backdrop-blur-md",
+          open || isScrolled
+            ? "border-border/60 bg-surface/80 shadow-md backdrop-blur-lg backdrop-saturate-150 supports-[backdrop-filter]:bg-surface/75"
+            : "border-border/80 bg-surface shadow-2xs",
         )}
       >
         <Logo />
